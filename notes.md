@@ -7,7 +7,7 @@ send message to friends
 front page:
  - sign up/sign in form (same form) -- do this last.
  - explore music - music headlines
- - search form for genres
+ - search form for genres (SearchForm component)
  - CRUD a playlist
 
 
