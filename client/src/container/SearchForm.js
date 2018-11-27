@@ -34,7 +34,7 @@ export default class SearchForm extends Component {
   render() {
     return (
       <div className='row'>
-        <div className="col-lg-6">
+        <div className="col-md-4">
           <form onSubmit={this.handleSubmit} >
             <div className="input-group">
               <div className="input-group-btn">
