@@ -5,27 +5,26 @@ export default class SearchForm extends Component {
   constructor() {
     super();
     this.state = {
-      searchText: '',
+      text: '',
       type: ''
     }
   }
 
-  handleChange = (event) => {
+  handleSearchInput = (event) => {
     this.setState({
-      searchText: event.target.value
+      text: event.target.value
     })
   }
 
-  handleSelect = (event) => {
-    event.preventDefault();
+  handleTypeSelect = (event) => {
     this.setState({
-      type: event.target.name
+      type: event.target.innerHTML
     })
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.search(this.state.searchText);
+    this.props.search(this.state);
   }
 
   returnTypes() {
@@ -34,20 +33,23 @@ export default class SearchForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} >
-        <div className='row'>
-          <div className="input-group">
-            <Dropdown menuItems={this.returnTypes()}
-            handleSelect={this.handleChange}/>
-            <input type="text" className="form-control"
-            value={this.state.searchText}
-            placeholder="Search genre, artist or songs"
-            onChange={this.handleChange} />
-            <input type="submit" value="Search" />
-          </div>
+      <div className='row'>
+        <div className="col-lg-6">
+          <form onSubmit={this.handleSubmit} >
+            <div className="input-group">
+              <div className="input-group-btn">
+                <Dropdown menuItems={this.returnTypes()}
+                handleSelect={this.handleTypeSelect}/>
+              </div>{/* btn group */}
+              <input type="text" className="form-control"
+              value={this.state.searchText}
+              placeholder="Search genre, artist or songs"
+              onChange={this.handleSearchInput} />
+            </div>{/* input group */}
+            <input type="submit" value="Search"/>
+          </form>
         </div>
-        {/*input-group*/}
-      </form>
+      </div>
     )
   }
 }

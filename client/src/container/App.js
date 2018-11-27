@@ -5,6 +5,7 @@ require('dotenv').config()
 
 const CLIENT_ID = process.env.REACT_APP_DEV_SPOTIFY_CLIENTID;
 const CLIENT_SECRET = process.env.REACT_APP_DEV_SPOTIFY_CLIENTSECRET;
+const REDIRECT_URI = 'http://localhost:3000'
 
 class App extends Component {
   constructor() {
@@ -16,31 +17,24 @@ class App extends Component {
 
   //get authorization token after component mounts
   componentDidMount() {
-    const fetchData = {
-      method: 'POST',
-      headers: {
-        'Authorization': `Basic${CLIENT_ID}:${CLIENT_SECRET}`
-      },
-      body: {
-        'grant_type': 'client_credentials'
-      },
-    }
-    fetch('https://accounts.spotify.com/api/token', fetchData)
-    .then(resp => resp.json()).then(jsonResp => this.setState({
-      authorization: jsonResp.token_type + ' ' + jsonResp.access_token
-    }))
+    fetch(`/api/spotify/token`, {accept: 'application/json'}).then(
+      resp => resp.json()).then(resp => this.setState({
+        authorization: resp.access_token
+      }))
   }
 
   //search function
-  handleSearch(searchText) {
+  handleSearch(searchState) {
     const fetchData = {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': this.state.authorization
       }
     }
-    fetch(`https://api.spotify.com/v1/search?q=${searchText}`, fetchData)
-    .then()
+    fetch(
+      `https://api.spotify.com/v1/search?q=${searchState.text}&type=${searchState.type}`,
+      fetchData)
+    .then(resp => resp.json()).then(jsonResp => console.log(jsonResp))
+    .catch(error => console.log(error))
   }
 
   render() {
