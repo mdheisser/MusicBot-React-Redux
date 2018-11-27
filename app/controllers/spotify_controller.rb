@@ -1,24 +1,54 @@
-require 'base64'
-
 class SpotifyController < ApplicationController
   def token
     resp = Faraday.post('https://accounts.spotify.com/api/token') do |req|
       req.headers = {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Basic MTUzZTdiNzkzMjJiNGU3ODllZGE5YjdjMmIzZmYzMmM6MTgzZjczNjBkZDljNDU2N2I0MmY2ODQ0N2Q3YTEwN2Q='
+          'Authorization': ENV['SPOTIFY_AUTHORIZATION']
         }
       req.body = {
         'grant_type': 'client_credentials'
       }
     end
-    binding.pry
+    render_result(resp)
+    render json: @result
+  end
+
+  def search
+    # organize search q into desired format if more than one word
+    search_q = search_text(params)
+    # connect to spotify API
+    resp = Faraday.get('https://api.spotify.com/v1/search') do |req|
+      req.headers = {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Bearer ' + params['authorization']
+        }
+      req.params = {
+        'q': search_q,
+        'type': params['type'],
+        'limit': '1'
+      }
+    end
+    render_result(resp)
+    render json: @result
+  end
+
+  private
+
+  def search_text(params)
+    if params['q'].split(' ').length > 1
+      search_q = params['q'].split(' ').join('+')
+    elsif params['q'].blank?
+      render status: 400, json: {error: 'expected parameter q'}
+    else
+      search_q = params['q']
+    end
+  end
+
+  def render_result(resp)
     if resp.success?
       @result = JSON.parse(resp.body)
-      render json: @result
     else
-      @result = resp['meta']['errorDetail']
-      render json: @result
+      @result = resp['body']
     end
-
   end
 end
