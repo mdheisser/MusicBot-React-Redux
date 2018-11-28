@@ -10,7 +10,6 @@ class SpotifyController < ApplicationController
       }
     end
     render_result(resp)
-    render json: @result
   end
 
   def search
@@ -29,7 +28,6 @@ class SpotifyController < ApplicationController
       }
     end
     render_result(resp)
-    render json: @result
   end
 
   private
@@ -47,8 +45,10 @@ class SpotifyController < ApplicationController
   def render_result(resp)
     if resp.success?
       @result = JSON.parse(resp.body)
+      render status: 200, json: @result
     else
       @result = resp['body']
+      render status: 400, json: @result
     end
   end
 end
