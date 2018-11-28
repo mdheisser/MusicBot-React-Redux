@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { fetchSearch, getToken } from '../actions/SearchActions'
+import { fetchSearch } from '../actions/SearchActions'
 
 import Dropdown from '../presentation/Dropdown'
 
@@ -10,14 +10,7 @@ class SearchForm extends Component {
     this.state = {
       text: '',
       type: '',
-      auth: ''
     }
-  }
-
-  componentDidMount() {
-    this.setState({
-      auth: this.props.auth
-    })
   }
 
   handleSearchInput = (event) => {
@@ -28,17 +21,18 @@ class SearchForm extends Component {
 
   handleTypeSelect = (event) => {
     this.setState({
-      type: event.target.innerHTML
+      type: event.target.innerHTML.toLowerCase()
     })
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.search(this.state);
+    this.props.search(this.state, this.props.auth);
+    this.props.removeMe(this.props.keyProp)
   }
 
   returnTypes() {
-    return ['album', 'artist', 'track'];
+    return ['Album', 'Artist', 'Track'];
   }
 
   render() {
@@ -68,7 +62,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    search: (searchData) => dispatch(fetchSearch(searchData))
+    search: (searchData, auth) => dispatch(fetchSearch(searchData, auth))
   }
 }
 
