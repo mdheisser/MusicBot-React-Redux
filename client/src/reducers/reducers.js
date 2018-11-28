@@ -16,9 +16,7 @@ function searchReducer(state=[], action) {
         ...state,
         {
           type: 'receiveSearch',
-          status: action.result.status,
-          error: action.error,
-          results: action.results
+          results: action.result
         }
       ]
     default:
@@ -27,12 +25,18 @@ function searchReducer(state=[], action) {
 }
 
 function errorReducer(state='', action) {
-
+  switch (action.type) {
+    case 'error':
+      return action.error
+    default:
+      return state;
+  }
 }
 
 const reducers = combineReducers({
   auth: authReducer,
-  searchResults: searchReducer
+  searchResults: searchReducer,
+  error: errorReducer
 })
 
 export default reducers

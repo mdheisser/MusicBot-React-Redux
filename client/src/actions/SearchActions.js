@@ -14,11 +14,12 @@ function receiveSearch(searchData) {
 
 function receiveError(error) {
   return {
+    type: 'error',
     error: error
   }
 }
 
-export function fetchSearch(searchData) {
+export function fetchSearch(searchData, auth) {
   const fetchData = {
     headers: {
       'Content-Type': 'application/json',
@@ -26,7 +27,7 @@ export function fetchSearch(searchData) {
   }
   return function(dispatch) {
     return fetch(
-      `/api/spotify/search?${searchData.text}&type=${searchData.type}&authorization=${searchData.auth}`,
+      `/api/spotify/search?q=${searchData.text}&type=${searchData.type}&authorization=${auth}`,
     fetchData).then(resp => resp.json()).then(
       json => dispatch(receiveSearch(json))).catch(
         error => dispatch(receiveError(error)))
