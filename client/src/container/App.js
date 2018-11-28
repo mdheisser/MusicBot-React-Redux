@@ -1,51 +1,40 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+
 import SearchForm from './SearchForm'
 import Navbar from '../presentation/Navbar'
-require('dotenv').config()
-
-const CLIENT_ID = process.env.REACT_APP_DEV_SPOTIFY_CLIENTID;
-const CLIENT_SECRET = process.env.REACT_APP_DEV_SPOTIFY_CLIENTSECRET;
-const REDIRECT_URI = 'http://localhost:3000'
+import SearchCard from '../presentation/SearchCard'
+import { fetchSearch, getToken } from '../actions/SearchActions'
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      authorization: ''
-    }
-  }
 
-  //get authorization token after component mounts
+  //get auth token after component mounts
   componentDidMount() {
-    fetch(`/api/spotify/token`, {accept: 'application/json'}).then(
-      resp => resp.json()).then(resp => this.setState({
-        authorization: resp.access_token
-      }))
+    this.props.getToken()
   }
 
-  //search function
-  handleSearch(searchState) {
-    const fetchData = {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    }
-    fetch(
-      `https://api.spotify.com/v1/search?q=${searchState.text}&type=${searchState.type}`,
-      fetchData)
-    .then(resp => resp.json()).then(jsonResp => console.log(jsonResp))
-    .catch(error => console.log(error))
-  }
 
   render() {
     return (
       <div className="App">
         <Navbar />
-        <SearchForm token={this.state.access_token}
-          search={this.handleSearch}/>
+        <SearchCard />
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+    searchResults: state.searchResults
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getToken: () => dispatch(getToken()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
