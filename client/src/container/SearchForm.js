@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { fetchSearch, getToken } from '../actions/SearchActions'
+
 import Dropdown from '../presentation/Dropdown'
 
-export default class SearchForm extends Component {
+class SearchForm extends Component {
   constructor() {
     super();
     this.state = {
       text: '',
-      type: ''
+      type: '',
+      auth: ''
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      auth: this.props.auth
+    })
   }
 
   handleSearchInput = (event) => {
@@ -28,28 +38,38 @@ export default class SearchForm extends Component {
   }
 
   returnTypes() {
-    return ['album', 'artist', 'playlist', 'track'];
+    return ['album', 'artist', 'track'];
   }
 
   render() {
     return (
-      <div className='row'>
-        <div className="col-md-4">
-          <form onSubmit={this.handleSubmit} >
-            <div className="input-group">
-              <div className="input-group-btn">
-                <Dropdown menuItems={this.returnTypes()}
-                handleSelect={this.handleTypeSelect}/>
-              </div>{/* btn group */}
-              <input type="text" className="form-control"
-              value={this.state.searchText}
-              placeholder="Search genre, artist or songs"
-              onChange={this.handleSearchInput} />
-            </div>{/* input group */}
-            <input type="submit" value="Search"/>
-          </form>
-        </div>
-      </div>
+      <form onSubmit={this.handleSubmit} >
+        <div className="input-group">
+          <Dropdown menuItems={this.returnTypes()}
+          handleSelect={this.handleTypeSelect}/>
+        <input type="text"
+          value={this.state.searchText}
+          placeholder="Keywords"
+          onChange={this.handleSearchInput} />
+          <input type="submit" value="Add Criteria" />
+        </div>{/* input group */}
+      </form>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+    searchResults: state.searchResults
+  }
+}
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    search: (searchData) => dispatch(fetchSearch(searchData))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchForm)
