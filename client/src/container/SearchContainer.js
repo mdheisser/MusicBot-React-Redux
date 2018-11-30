@@ -15,6 +15,7 @@ export default class SearchContainer extends Component {
       showForm: true,
       showAlert: false
     }
+    this.reshowForm = this.reshowForm.bind(this)
   }
 
   handleSearchInput = (event) => {

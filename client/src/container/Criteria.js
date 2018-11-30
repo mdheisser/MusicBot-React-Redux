@@ -31,35 +31,24 @@ class Criteria extends Component {
   //organize data into desirable format according to search type
   returnItems = (result) => {
     let info = Object.values(result)[0]['items']
-    if(info.length === 0) {
-      //check if no search result
-      return this.renderNone()
-    } else {
-      if (Object.keys(result)[0] === 'albums') {
-        // if search type is album
-        return {
-          album_name: info[0].name,
-          artist: info[0].artists[0].name,
-          release_date: info[0].release_date,
-        }
-      } else if (Object.keys(result)[0] === 'artists') {
-        return {
-          artist_name: info[0].name,
-          popularity: info[0].popularity,
-          genres: info[0].genres.join(', ')
-        }
-      } else if (Object.keys(result)[0] === 'tracks') {
-        return {
-          track_name: info[0].name,
-          artist: info[0].artists[0].name,
-          release_date: info[0].release_date
-        }
+    if (Object.keys(result)[0] === 'artists') {
+      return {
+        artist_name: info[0].name,
+        popularity: info[0].popularity,
+        genres: info[0].genres.join(', ')
+      }
+    } else if (Object.keys(result)[0] === 'tracks') {
+      return {
+        track_name: info[0].name,
+        artist: info[0].artists[0].name,
+        release_date: info[0].release_date
       }
     }
   }
 
   renderItemList = (result) => {
     const items = this.returnItems(result)
+    debugger;
     return(Object.keys(items).map((key) =>
       <ListGroupItem header={key.split('_').join(' ')}>
         {items[key]}
@@ -70,7 +59,8 @@ class Criteria extends Component {
   renderResult = () => {
     let result;
     result = this.state.searchResults;
-    if(Object.values(result).length !== 0) {
+    debugger;
+    if(Object.values(result)[0].items.length !== 0) {
       return (
         <ListGroup>
           {this.renderItemList(result)}
@@ -94,7 +84,8 @@ class Criteria extends Component {
     return (
       <React.Fragment>
         {this.state.render ? this.renderResult() : null}
-        <button bsStyle='warning'>Reset</button>
+        <Button bsStyle='warning'
+          onClick={this.props.reshowForm} >Reset</Button>
       </React.Fragment>
     )
   }
