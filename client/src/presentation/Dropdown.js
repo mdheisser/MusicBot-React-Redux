@@ -22,7 +22,7 @@ class DropdownButton extends PureComponent {
   render() {
     return (
       <ButtonToolbar>
-        <Dropdown onSelect={this.toggleDrop}>
+        <Dropdown id="searchDropdown" onSelect={this.toggleDrop}>
           <Button bsStyle='info' id="button-1">{this.state.button}</Button>
           <Dropdown.Toggle />
           <Dropdown.Menu>
