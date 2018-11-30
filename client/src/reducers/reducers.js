@@ -9,16 +9,20 @@ function authReducer(state='', action) {
   }
 }
 
-function searchReducer(state=[], action) {
+function searchReducer(state={'form-1': {}, 'form-2': {}}, action) {
   switch (action.type) {
-    case 'receiveSearch':
-      return [
-        ...state,
-        {
-          type: 'receiveSearch',
-          results: action.result
+    case 'saveSearch':
+      if(action.keyProp === 'form-1') {
+        return {
+          ...state,
+          'form-1': action.result
         }
-      ]
+      } else {
+        return {
+          ...state,
+          'form-2': action.result
+        }
+      }
     default:
       return state;
   }

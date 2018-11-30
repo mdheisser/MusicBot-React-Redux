@@ -5,10 +5,11 @@ function receiveToken(authData) {
   }
 }
 
-function receiveSearch(searchData) {
+function receiveSearch(searchData, keyProp) {
   return {
     type: 'receiveSearch',
-    result: searchData
+    result: searchData,
+    keyProp: keyProp
   }
 }
 
@@ -19,18 +20,11 @@ function receiveError(error) {
   }
 }
 
-export function fetchSearch(searchData, auth) {
-  const fetchData = {
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  }
-  return function(dispatch) {
-    return fetch(
-      `/api/spotify/search?q=${searchData.text}&type=${searchData.type}&authorization=${auth}`,
-    fetchData).then(resp => resp.json()).then(
-      json => dispatch(receiveSearch(json))).catch(
-        error => dispatch(receiveError(error)))
+export function storeSearch(searchResult, keyProp) {
+  return {
+    type: 'saveSearch',
+    result: searchResult,
+    keyProp: keyProp
   }
 }
 
@@ -38,6 +32,7 @@ export function getToken() {
   return function(dispatch) {
     fetch(`/api/spotify/token`, {accept: 'application/json'})
     .then(resp => resp.json()).then(
-      json => dispatch(receiveToken(json)))
+      json => dispatch(receiveToken(json))).catch(
+        error => dispatch(receiveError(error.body)))
   }
 }
