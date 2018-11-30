@@ -1,7 +1,6 @@
-user search artist/song/genre (3 column panes of search)
-display simple statistics
-generate song recommendation up top
-connect to user profile and CRUD to playlist; 
+Generate User's personal music profile -
+Tell us 2 of your favorite artist, track or album
+We generate a profile for you and recommends a song
 
 front page:
  - sign up/sign in form (same form) -- do this last.

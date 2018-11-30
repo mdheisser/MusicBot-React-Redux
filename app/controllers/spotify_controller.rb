@@ -30,6 +30,10 @@ class SpotifyController < ApplicationController
     render_result(resp)
   end
 
+  def get_track_features
+
+  end
+
   private
 
   def search_text(params)
