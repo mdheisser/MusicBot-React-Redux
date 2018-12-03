@@ -1,31 +1,45 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { createProfile } from '../actions/ProfileActions'
 
 class Profile extends Component {
-  getAudioFeature = (trackID) => {
-
-  }
-
-  getInfo = () => {
-    const results = Object.values(this.props.searchResults)
+  getProfile = (results) => {
+    //create profile in server and associate the tracks/artists with the profile
+    var trackIDs = []
+    var artistIDs = []
     for(const result of results) {
       var keyword = Object.keys(result)[0]
       if(keyword === 'tracks') {
         var track = result['tracks']['items'][0]
-        var trackID = track.id
-        this.getAudioFeature(trackID)
+        trackIDs.push(track.id)
       } else if (keyword === 'artists') {
         var artist = result['artists']['items'][0]
-        var genres = artist.genres
-        var popularity = artist.popularity
-        var artist_name = artist.name
+        artistIDs.push(artist.id)
       }
     }
+    //create new profile in db and get profile ID
+    this.props.createProfile(trackIDs, artistIDs);
+  }
+
+  showInfo = () => {
+    return (
+      <p>Genres</p>
+    )
+  }
+
+  //create profile after component mounts
+  componentDidMount() {
+    const results = Object.values(this.props.searchResults)
+    const boundGetProfile = this.getProfile.bind(this)
+    boundGetProfile(results);
   }
 
   render() {
     return (
-      <p>Song</p>
+      <React.Fragment>
+        <h5>Your Profile:</h5>
+        {this.props.profileID ? this.showInfo() : null}
+      </React.Fragment>
     )
   }
 }
@@ -33,8 +47,16 @@ class Profile extends Component {
 const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
-    auth: state.auth
+    profileID: state.profileID
   }
 }
 
-export default connect(mapStateToProps)(Profile)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createProfile: (trackIDs, artistIDs) => dispatch(
+      createProfile(trackIDs, artistIDs)),
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

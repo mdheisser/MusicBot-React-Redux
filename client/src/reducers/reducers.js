@@ -1,14 +1,5 @@
 import { combineReducers } from 'redux'
 
-function authReducer(state='', action) {
-  switch(action.type) {
-    case 'authorize':
-      return action.token
-    default:
-      return state
-  }
-}
-
 function searchReducer(state={'form-1': {}, 'form-2': {}}, action) {
   switch (action.type) {
     case 'saveSearch':
@@ -37,10 +28,29 @@ function errorReducer(state='', action) {
   }
 }
 
+function profileIDReducer(state='', action) {
+  switch(action.type) {
+    case 'createProfile':
+      return action.profileID
+    default:
+      return state
+  }
+}
+
+function genresReducer(state=[], action) {
+  switch (action.type) {
+    case 'getGenres':
+      return action.genres;
+    default:
+      return state;
+  }
+}
+
 const reducers = combineReducers({
-  auth: authReducer,
   searchResults: searchReducer,
-  error: errorReducer
+  error: errorReducer,
+  profileID: profileIDReducer,
+  genres: genresReducer
 })
 
 export default reducers
