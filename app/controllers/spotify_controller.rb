@@ -1,16 +1,5 @@
 class SpotifyController < ApplicationController
-  def token
-    resp = Faraday.post('https://accounts.spotify.com/api/token') do |req|
-      req.headers = {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': ENV['SPOTIFY_AUTHORIZATION']
-        }
-      req.body = {
-        'grant_type': 'client_credentials'
-      }
-    end
-    render_result(resp)
-  end
+  before_action :get_token
 
   def search
     # organize search q into desired format if more than one word
@@ -19,7 +8,7 @@ class SpotifyController < ApplicationController
     resp = Faraday.get('https://api.spotify.com/v1/search') do |req|
       req.headers = {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Bearer ' + params['authorization']
+          'Authorization': @token
         }
       req.params = {
         'q': search_q,
@@ -28,10 +17,6 @@ class SpotifyController < ApplicationController
       }
     end
     render_result(resp)
-  end
-
-  def get_track_features
-
   end
 
   private
@@ -55,4 +40,6 @@ class SpotifyController < ApplicationController
       render status: 400, json: @result
     end
   end
+
+
 end
