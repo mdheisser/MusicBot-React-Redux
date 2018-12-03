@@ -5,7 +5,7 @@ import SearchContainer from './SearchContainer'
 import Navbar from '../presentation/Navbar'
 import ProfileContainer from '../presentation/ProfileContainer'
 import WelcomePanel from '../presentation/WelcomePanel'
-import { fetchSearch, getToken } from '../actions/SearchActions'
+import { fetchSearch } from '../actions/SearchActions'
 
 class App extends Component {
   constructor() {
@@ -17,10 +17,6 @@ class App extends Component {
       },
       showProfile: false
     }
-  }
-  //get auth token after component mounts
-  componentDidMount() {
-    this.props.getToken()
   }
 
   showProfile = () => {
@@ -59,15 +55,9 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth,
-    searchResults: state.searchResults
+    searchResults: state.searchResults,
+    profileID: state.profileID
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getToken: () => dispatch(getToken()),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

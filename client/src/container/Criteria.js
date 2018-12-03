@@ -16,7 +16,7 @@ class Criteria extends Component {
 
   componentDidMount() {
     const searchData = this.props.searchData
-    fetch(`/api/spotify/search?q=${searchData.text}&type=${searchData.type}&authorization=${this.props.auth}`)
+    fetch(`/api/spotify/search?q=${searchData.text}&type=${searchData.type}`)
     .then(resp => resp.json()).then(json => {
       this.setState({
         searchResults: json,
@@ -48,7 +48,6 @@ class Criteria extends Component {
 
   renderItemList = (result) => {
     const items = this.returnItems(result)
-    debugger;
     return(Object.keys(items).map((key) =>
       <ListGroupItem header={key.split('_').join(' ')}>
         {items[key]}
@@ -59,7 +58,6 @@ class Criteria extends Component {
   renderResult = () => {
     let result;
     result = this.state.searchResults;
-    debugger;
     if(Object.values(result)[0].items.length !== 0) {
       return (
         <ListGroup>
@@ -91,12 +89,6 @@ class Criteria extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    auth: state.auth
-  }
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
     saveSearch: (searchResult, keyProp) =>
@@ -105,4 +97,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Criteria);
+export default connect(null, mapDispatchToProps)(Criteria);
