@@ -1,44 +1,55 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProfile } from '../actions/ProfileActions'
+import { receiveError } from '../actions/ProfileActions'
 
 class Profile extends Component {
-  getProfile = (results) => {
-    //create profile in server and associate the tracks/artists with the profile
-    var trackIDs = []
-    var artistIDs = []
-    for(const result of results) {
-      var keyword = Object.keys(result)[0]
-      if(keyword === 'tracks') {
-        var track = result['tracks']['items'][0]
-        trackIDs.push(track.id)
-      } else if (keyword === 'artists') {
-        var artist = result['artists']['items'][0]
-        artistIDs.push(artist.id)
-      }
+  constructor() {
+    super();
+    this.state = {
+      showRec: false,
+      rec: {}
     }
-    //create new profile in db and get profile ID
-    this.props.createProfile(trackIDs, artistIDs);
   }
 
-  showInfo = () => {
+  showResult = () => {
+    const rec = this.state.rec
+    const iframeID = rec.uri.split(':')[2]
+    const iframeSRC = `https://open.spotify.com/embed/track/${iframeID}`
     return (
-      <p>Genres</p>
+      <>
+        <p>{rec.name}</p>
+        <p>Popularity: {rec.popularity}</p>
+        <p>Artist: {rec.artists[0]['name']}</p>
+        <iframe src={iframeSRC}
+          width='300' height='380' frameBorder='0'
+          allowTransparency='true' allow='encrypted-media'>
+        </iframe>
+      </>
     )
   }
 
-  //create profile after component mounts
+  // getResult = (rec) => {
+  //   this.setState({
+  //     showRec: true
+  //   })
+  //   this.showResult(rec)
+  // }
+  //get profile recommendation after component mounts
   componentDidMount() {
-    const results = Object.values(this.props.searchResults)
-    const boundGetProfile = this.getProfile.bind(this)
-    boundGetProfile(results);
+    fetch(`api/profiles/${this.props.profile.profileID}/recommendations`)
+    .then(resp => resp.json())
+    .then(json => this.setState({
+      showRec: true,
+      rec: json
+    })).catch(
+      error => this.props.error(error))
   }
 
   render() {
     return (
       <React.Fragment>
-        <h5>Your Profile:</h5>
-        {this.props.profileID ? this.showInfo() : null}
+        <h5>We Recommend: </h5>
+        {this.state.showRec ? this.showResult() : null}
       </React.Fragment>
     )
   }
@@ -47,15 +58,14 @@ class Profile extends Component {
 const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
-    profileID: state.profileID
+    profile: state.profile,
+    recommendations: state.recommendations
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createProfile: (trackIDs, artistIDs) => dispatch(
-      createProfile(trackIDs, artistIDs)),
-
+    error: (error) => dispatch(receiveError(error))
   }
 }
 
