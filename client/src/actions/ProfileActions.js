@@ -5,17 +5,17 @@ function profileAction(profileID) {
   }
 }
 
-function receiveError(error) {
+export function receiveError(error) {
   return {
     type: 'error',
     error: error
   }
 }
 
-function getGenres(genres) {
+function getRec(rec) {
   return {
-    type: 'getGenres',
-    genres: genres.split(', ')
+    type: 'getRec',
+    recommendation: rec
   }
 }
 
@@ -34,13 +34,5 @@ export function createProfile(trackIDs, artistIDs) {
     fetch(`api/profiles`, fetchData).then(resp => resp.json())
     .then(json => dispatch(profileAction(json.id))).catch(
       error => dispatch(receiveError(error)))
-  }
-}
-
-export function receiveGenres(profileID) {
-  return function(dispatch) {
-    fetch(`api/profiles/${profileID}/genres`).then(resp => resp.json())
-    .then(json => dispatch(getGenres(json.result)))
-    .catch(error => dispatch(receiveError(error)))
   }
 }
