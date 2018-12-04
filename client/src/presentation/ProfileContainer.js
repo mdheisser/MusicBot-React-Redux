@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Button, Jumbotron, Grid, Row, Col } from 'react-bootstrap'
 import Profile from '../container/Profile'
 
@@ -7,8 +7,8 @@ function ProfileContainer (props) {
     <React.Fragment>
       <Row>
         <Button bsStyle="primary" bsSize="large" block
-          onClick={props.showProfile}>
-          See my profile
+          onClick={props.getProfile}>
+          See my song
         </Button>
       </Row>
       <Row>
