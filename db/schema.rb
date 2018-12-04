@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_30_213358) do
+ActiveRecord::Schema.define(version: 2018_12_04_000120) do
 
   create_table "artists", force: :cascade do |t|
     t.string "spotify_id"
@@ -18,6 +18,8 @@ ActiveRecord::Schema.define(version: 2018_11_30_213358) do
     t.datetime "updated_at", null: false
     t.string "genres"
     t.string "popularity"
+    t.string "name"
+    t.boolean "liked"
   end
 
   create_table "artists_profiles", id: false, force: :cascade do |t|
@@ -45,6 +47,7 @@ ActiveRecord::Schema.define(version: 2018_11_30_213358) do
     t.float "energy"
     t.float "valence"
     t.string "genres"
+    t.boolean "liked"
   end
 
 end
