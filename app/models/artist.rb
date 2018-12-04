@@ -16,24 +16,18 @@ class Artist < ApplicationRecord
   end
 
   #return related artists
-  def get_related(token)
+  def get_detail(token)
     resp = Faraday.get(
-      "https://api.spotify.com/v1/artists/#{self.spotify_id}/related-artists") do |req|
+      "https://api.spotify.com/v1/artists/#{self.spotify_id}") do |req|
         req.headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': token
         }
     end
     body = JSON.parse(resp.body)
-    artists = []
-    body['artists'][0 ... 2].each do |artist|
-      info = {
-       image: artist['images'][-1],
-       name: artist['name'],
-       url: artist['external_urls']['spotify']
-      }
-      artists.push(info)
-    end
-    return artists
+    self.name = body['name']
+    self.popularity = body['popularity']
+    self.image_url = body['images'][0]['url']
+    return self
   end
 end

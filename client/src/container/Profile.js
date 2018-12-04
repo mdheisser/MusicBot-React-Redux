@@ -28,12 +28,6 @@ class Profile extends Component {
     )
   }
 
-  // getResult = (rec) => {
-  //   this.setState({
-  //     showRec: true
-  //   })
-  //   this.showResult(rec)
-  // }
   //get profile recommendation after component mounts
   componentDidMount() {
     fetch(`api/profiles/${this.props.profile.profileID}/recommendations`)
