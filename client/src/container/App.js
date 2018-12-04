@@ -6,6 +6,7 @@ import Navbar from '../presentation/Navbar'
 import ProfileContainer from '../presentation/ProfileContainer'
 import WelcomePanel from '../presentation/WelcomePanel'
 import { fetchSearch } from '../actions/SearchActions'
+import { createProfile } from '../actions/ProfileActions'
 
 class App extends Component {
   constructor() {
@@ -14,15 +15,26 @@ class App extends Component {
       renderSearch: {
         'form-1': true,
         'form-2': true,
-      },
-      showProfile: false
+      }
     }
   }
 
-  showProfile = () => {
-    this.setState({
-      showProfile: true
-    })
+  getProfile = () => {
+    const results = Object.values(this.props.searchResults)
+    var trackIDs = []
+    var artistIDs = []
+    for(const result of results) {
+      var keyword = Object.keys(result)[0]
+      if(keyword === 'tracks') {
+        var track = result['tracks']['items'][0]
+        trackIDs.push(track.id)
+      } else if (keyword === 'artists') {
+        var artist = result['artists']['items'][0]
+        artistIDs.push(artist.id)
+      }
+    }
+    //create new profile in db and get profile ID
+    this.props.createProfile(trackIDs, artistIDs);
   }
 
   render() {
@@ -33,19 +45,13 @@ class App extends Component {
           <Grid>
             <WelcomePanel />
             <Row className="show-grid">
-              <Col xs={6} md={6}>
-                <Jumbotron>
-                  <SearchContainer keyProp='form-1' />
-                </Jumbotron>
-              </Col>
-              <Col xs={6} md={6}>
-                <Jumbotron>
-                  <SearchContainer keyProp='form-2' />
-                </Jumbotron>
-              </Col>
+              <Jumbotron>
+                <h1>Your song or artist</h1>
+                <SearchContainer keyProp='form-1' />
+              </Jumbotron>
             </Row>
-            <ProfileContainer showProfile={this.showProfile}
-            profile={this.state.showProfile}/>
+            <ProfileContainer getProfile={this.getProfile}
+            profile={this.props.profile.showProfile}/>
           </Grid>
         </div>
       </div>
@@ -56,8 +62,15 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
-    profileID: state.profileID
+    profile: state.profile
   }
 }
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createProfile: (trackIDs, artistIDs) => dispatch(
+      createProfile(trackIDs, artistIDs))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
