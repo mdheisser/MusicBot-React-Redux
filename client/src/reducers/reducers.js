@@ -28,19 +28,25 @@ function errorReducer(state='', action) {
   }
 }
 
-function profileIDReducer(state='', action) {
+function profileIDReducer(state={showProfile: false, profileID: ''}, action) {
   switch(action.type) {
     case 'createProfile':
-      return action.profileID
+      return {
+        showProfile: true,
+        profileID: action.profileID
+      }
     default:
       return state
   }
 }
 
-function genresReducer(state=[], action) {
+function recReducer(state={showRec: false, rec: {}}, action) {
   switch (action.type) {
-    case 'getGenres':
-      return action.genres;
+    case 'getRec':
+      return {
+        showRec: true,
+        rec: action.recommendation
+      };
     default:
       return state;
   }
@@ -49,8 +55,8 @@ function genresReducer(state=[], action) {
 const reducers = combineReducers({
   searchResults: searchReducer,
   error: errorReducer,
-  profileID: profileIDReducer,
-  genres: genresReducer
+  profile: profileIDReducer,
+  recommendations: recReducer
 })
 
 export default reducers
