@@ -5,11 +5,10 @@ function receiveToken(authData) {
   }
 }
 
-function receiveSearch(searchData, keyProp) {
+function receiveSearch(searchData) {
   return {
     type: 'receiveSearch',
     result: searchData,
-    keyProp: keyProp
   }
 }
 
@@ -20,12 +19,9 @@ function receiveError(error) {
   }
 }
 
-
-
-export function storeSearch(searchResult, keyProp) {
+export function storeSearch(searchResult) {
   return {
     type: 'saveSearch',
     result: searchResult,
-    keyProp: keyProp
   }
 }
