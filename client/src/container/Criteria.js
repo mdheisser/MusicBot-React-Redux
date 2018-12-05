@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { ListGroup, ListGroupItem, Button } from 'react-bootstrap'
+import { Jumbotron, ListGroup, ListGroupItem, Button } from 'react-bootstrap'
 import { storeSearch } from '../actions/SearchActions'
 
 
@@ -22,7 +22,7 @@ class Criteria extends Component {
         searchResults: json,
         render: true
       });
-      this.props.saveSearch(json, this.props.keyProp)})
+      this.props.saveSearch(json)})
       .catch(error => this.setState({
         error: error.body
     }))
@@ -80,19 +80,19 @@ class Criteria extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <Jumbotron>
         {this.state.render ? this.renderResult() : null}
         <Button bsStyle='warning'
           onClick={this.props.reshowForm} >Reset</Button>
-      </React.Fragment>
+      </Jumbotron>
     )
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveSearch: (searchResult, keyProp) =>
-      dispatch(storeSearch(searchResult, keyProp))
+    saveSearch: (searchResult) =>
+      dispatch(storeSearch(searchResult))
   }
 }
 
