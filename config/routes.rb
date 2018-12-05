@@ -3,5 +3,6 @@ Rails.application.routes.draw do
   get '/api/spotify/token', to: 'spotify#token'
   get '/api/spotify/search', to: 'spotify#search'
   post '/api/profiles', to: 'profile#create'
-  get '/api/profiles/:id/recommendations', to: 'profile#recommend'
+  post '/api/profiles/:profile_id/recommendations', to: 'profile#recommend'
+  post '/api/profiles/:profile_id/likes', to: 'profile#like'
 end
