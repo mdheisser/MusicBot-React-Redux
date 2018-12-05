@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Dropdown from '../presentation/Dropdown'
 import Criteria from './Criteria';
-import { Alert } from 'react-bootstrap'
+import { Row, Jumbotron, Alert } from 'react-bootstrap'
 
 
 export default class SearchContainer extends Component {
@@ -69,18 +69,23 @@ export default class SearchContainer extends Component {
 
   showForm = () => {
     return(
-      <form onSubmit={this.handleSubmit} >
-        <div className="input-group">
-          <Dropdown menuItems={this.returnTypes()}
-          handleSelect={this.handleTypeSelect}/>
-        {this.state.showAlert ? this.showAlert() : null}
-        <input type="text"
-          value={this.searchText}
-          placeholder="Keywords"
-          onChange={this.handleSearchInput} />
-          <input type="submit" value="Add Criteria" />
-        </div>{/* input group */}
-      </form>
+      <Row className="show-grid">
+        <Jumbotron>
+          <h1>Your song or artist</h1>
+          <form onSubmit={this.handleSubmit} >
+            <div className="input-group">
+              <Dropdown menuItems={this.returnTypes()}
+              handleSelect={this.handleTypeSelect}/>
+            {this.state.showAlert ? this.showAlert() : null}
+            <input type="text"
+              value={this.searchText}
+              placeholder="Keywords"
+              onChange={this.handleSearchInput} />
+              <input type="submit" value="Add Criteria" />
+            </div>{/* input group */}
+          </form>
+        </Jumbotron>
+      </Row>
     )
   }
 
@@ -92,7 +97,7 @@ export default class SearchContainer extends Component {
 
   showResult = () => {
     return(
-      <Criteria searchData={this.state.search} keyProp={this.props.keyProp}
+      <Criteria searchData={this.state.search}
       reshowForm={this.reshowForm}/>
     )
   }
