@@ -1,14 +1,9 @@
-Generate User's personal music profile -
-Tell us 2 of your favorite artist, track or album
-We generate a profile for you and recommends a song
-
-front page:
- - sign up/sign in form (same form) -- do this last.
- - explore music - music headlines
- - search form for songs (SearchForm component) and play the search results
- - CRUD a playlist
- - share music with friends (messages with friends)
-
+Need to do:
+-- sign up or log in form with spotify
+-- see profile: my likes and my inputs
+-- when dislike button is hit, new song is rendered
+-- add animation background
+-- add # scroll and react routes
 
 The code is written in ES6 as much as possible *
 
