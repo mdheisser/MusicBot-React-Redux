@@ -1,19 +1,9 @@
 import { combineReducers } from 'redux'
 
-function searchReducer(state={'form-1': {}, 'form-2': {}}, action) {
+function searchReducer(state={}, action) {
   switch (action.type) {
     case 'saveSearch':
-      if(action.keyProp === 'form-1') {
-        return {
-          ...state,
-          'form-1': action.result
-        }
-      } else {
-        return {
-          ...state,
-          'form-2': action.result
-        }
-      }
+      return action.result
     default:
       return state;
   }
@@ -40,13 +30,10 @@ function profileIDReducer(state={showProfile: false, profileID: ''}, action) {
   }
 }
 
-function recReducer(state={showRec: false, rec: {}}, action) {
+function likeReducer(state=[], action) {
   switch (action.type) {
-    case 'getRec':
-      return {
-        showRec: true,
-        rec: action.recommendation
-      };
+    case 'saveLike':
+      return action.likes;
     default:
       return state;
   }
@@ -56,7 +43,7 @@ const reducers = combineReducers({
   searchResults: searchReducer,
   error: errorReducer,
   profile: profileIDReducer,
-  recommendations: recReducer
+  likes: likeReducer
 })
 
 export default reducers
