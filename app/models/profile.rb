@@ -1,18 +1,21 @@
 class Profile < ApplicationRecord
   has_and_belongs_to_many :tracks
   has_and_belongs_to_many :artists
+  has_many :likes
 
   #associate tracks and artists with profile after user input
   def save_tracks_and_artists(artist_ids, track_ids)
     if artist_ids.length > 0
       artist_ids.each do |id|
-        artist = Artist.find_or_create_by(spotify_id: id, liked: true)
+        artist = Artist.find_or_create_by(spotify_id: id)
+        Like.create(profile_id: self.id, artist_id: artist.id, category: 'artist', spotify_id: artist.spotify_id)
         self.artists << artist
       end
     end
     if track_ids.length > 0
       track_ids.each do |id|
-        track = Track.find_or_create_by(spotify_id: id, liked: true)
+        track = Track.find_or_create_by(spotify_id: id)
+        Like.create(profile_id: self.id, track_id: track.id, category: 'track', spotify_id: track.spotify_id)
         self.tracks << track
       end
     end
