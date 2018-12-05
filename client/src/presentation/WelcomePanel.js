@@ -5,10 +5,10 @@ const WelcomePanel = () => {
   return (
     <Panel>
       <Panel.Heading>
-        <h2>Welcome to My Music Profiler!</h2>
+        <h2>Welcome to My Smart Track!</h2>
       </Panel.Heading>
       <Panel.Body>
-        Tell me two of your favorite artist, song or album in the below section and generate your personal music profile.
+        Tell me which artist or song is on your mind today, and we will recommend something else to you!
       </Panel.Body>
     </Panel>
   )

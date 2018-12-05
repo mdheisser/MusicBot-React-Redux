@@ -5,14 +5,14 @@ const MusicNavbar = () =>
   <Navbar inverse collapseOnSelect>
   <Navbar.Header>
     <Navbar.Brand>
-      <a href="#brand">Smart Music - Track Finder</a>
+      <a href="#brand">My Smart Tracks</a>
     </Navbar.Brand>
     <Navbar.Toggle />
   </Navbar.Header>
   <Navbar.Collapse>
     <Nav>
       <NavItem eventKey={1} href="#">
-        Explore a song recommendation
+        My Profile
       </NavItem>
       <NavItem eventKey={2} href="#">
         My songs
