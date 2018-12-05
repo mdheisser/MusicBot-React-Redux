@@ -1,5 +1,6 @@
 class ProfileController < ApplicationController
   before_action :get_token, only: [:recommend]
+  before_action :get_profile, only: [:recommend, :save, :like]
 
   #when get profile is clicked, create profile in db
   def create
@@ -10,10 +11,29 @@ class ProfileController < ApplicationController
     render json: @profile
   end
 
+  #render json object of entire spotify response
+  #save recommended track to db
   def recommend
-    @profile = Profile.find_by(id: params[:id])
     track = @profile.get_rec(@token)
+    @track = Track.create(spotify_id: track['id'], name: track['name'])
     render json: track
+  end
+
+  #create a like object that associates with the track and profile
+  def like
+    like = Like.create(
+      spotify_id: params[:spotifyID],
+      profile_id: @profile.id,
+      category: 'track',
+    )
+    likes = @profile.likes.map {|like| {type: like.category, id: like.spotify_id}}
+    render json: likes
+  end
+
+  private
+
+  def get_profile
+    @profile = Profile.find_by(id: params[:profile_id])
   end
 
 end
