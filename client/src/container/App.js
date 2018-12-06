@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Button, Grid, Row, Col } from 'react-bootstrap'
 import SearchContainer from './SearchContainer'
 import Navbar from '../presentation/Navbar'
 import ProfileContainer from '../presentation/ProfileContainer'
-import WelcomePanel from '../presentation/WelcomePanel'
+import Welcome from '../presentation/WelcomePanel'
 import { createProfile } from '../actions/ProfileActions'
 
 class App extends Component {
@@ -33,22 +34,23 @@ class App extends Component {
 
   render() {
     return (
+      <Router>
         <div className="App">
           <Navbar />
+          <Route exact path="/" render={Welcome} />
           <div className="container-fluid">
             <Grid>
-              <WelcomePanel />
-              <SearchContainer />
-                <Row>
-                  <Button bsStyle="primary" bsSize="large" block
-                    onClick={this.getProfile}>
-                    Get My Track
-                  </Button>
-                </Row>
-              <ProfileContainer profile={this.props.profile.showProfile} />
+              <Route exact path="/start" render={
+                  routeProps => <SearchContainer {...routeProps}
+                  getProfile={this.getProfile} />}/>
+                <Route exact path="/recommend" render={routeProps =>
+                    <ProfileContainer {...routeProps}
+                    profile={this.props.profile.showProfile} />} />
             </Grid>
           </div>
         </div>
+      </Router>
+
     );
   }
 }
