@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ReactDOM from 'react-dom';
 import { receiveError, saveLike } from '../actions/ProfileActions'
 import Like from '../presentation/Like'
 import { Col } from 'react-bootstrap'

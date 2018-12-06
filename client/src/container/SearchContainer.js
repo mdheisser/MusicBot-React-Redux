@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Dropdown from '../presentation/Dropdown'
 import Criteria from './Criteria';
-import { Row, Jumbotron, Alert } from 'react-bootstrap'
-
+import { Row, Jumbotron, Alert, Button } from 'react-bootstrap'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 export default class SearchContainer extends Component {
   constructor() {
@@ -104,7 +104,14 @@ export default class SearchContainer extends Component {
 
   render() {
     return (
-      this.state.showForm ? this.showForm() : this.showResult()
+      <div className="container-fluid">
+        {this.state.showForm ? this.showForm() : this.showResult()}
+        <Row>
+          <button onClick={this.props.getProfile}>
+            <Link to="/recommend">Get My Song</Link>
+          </button>
+        </Row>
+      </div>
     )
   }
 }
