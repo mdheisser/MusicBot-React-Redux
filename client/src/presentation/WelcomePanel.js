@@ -1,17 +1,20 @@
 import React from 'react';
-import { Panel } from 'react-bootstrap'
+import { Jumbotron, Button } from 'react-bootstrap'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import '../css/welcome.css'
 
-const WelcomePanel = () => {
+const Welcome = () => {
   return (
-    <Panel>
-      <Panel.Heading>
-        <h2>Welcome to My Smart Track!</h2>
-      </Panel.Heading>
-      <Panel.Body>
-        Tell me which artist or song is on your mind today, and we will recommend something else to you!
-      </Panel.Body>
-    </Panel>
+    <Jumbotron bsClass="welcome-jumbo">
+      <h1>Hi, I am Music Bot</h1>
+      <p>
+        Give me an artist or song, and I recommend you similar songs to listen to
+      </p>
+      <button className="start-button">
+        <Link to="/start">Get Started</Link>
+      </button>
+    </Jumbotron>
   )
 }
 
-export default WelcomePanel;
+export default Welcome;

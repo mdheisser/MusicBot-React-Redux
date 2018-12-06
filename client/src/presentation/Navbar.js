@@ -5,7 +5,7 @@ const MusicNavbar = () =>
   <Navbar inverse collapseOnSelect>
   <Navbar.Header>
     <Navbar.Brand>
-      <a href="#brand">My Smart Tracks</a>
+      <a href="#brand">My MusicBot</a>
     </Navbar.Brand>
     <Navbar.Toggle />
   </Navbar.Header>
@@ -18,7 +18,7 @@ const MusicNavbar = () =>
         My songs
       </NavItem>
       <NavItem eventKey={2} href="#">
-        My Spotify Profile
+        Connect to Spotify
       </NavItem>
     </Nav>
     <Nav pullRight>
