@@ -6,7 +6,7 @@ import '../css/welcome.css'
 const Welcome = () => {
   return (
     <Jumbotron bsClass="welcome-jumbo">
-      <h1>Hi, I am Music Bot</h1>
+      <h1>Hi, I am MusicBot</h1>
       <p>
         Give me an artist or song, and I recommend you similar songs to listen to
       </p>
