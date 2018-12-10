@@ -12,11 +12,15 @@ class ProfileController < ApplicationController
   end
 
   #render json object of entire spotify response
-  #save recommended track to db
+  #save recommended track to db and associate with profile
   def recommend
-    track = @profile.get_rec(@token)
-    @track = Track.create(spotify_id: track['id'], name: track['name'])
-    render json: track
+    tracks = @profile.get_rec(@token)
+    tracks.each do |track|
+      t = Track.find_or_create_by(spotify_id: track['id'])
+      @profile.tracks << t
+    end
+    binding.pry
+    render json: tracks
   end
 
   #create a like object that associates with the track and profile
