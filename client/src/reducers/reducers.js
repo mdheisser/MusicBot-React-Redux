@@ -39,11 +39,24 @@ function likeReducer(state=[], action) {
   }
 }
 
+function profileInfoReducer(state = {}, action) {
+  switch (action.type) {
+    case 'signIn':
+      return {
+        name: action.name,
+        likes: action.likes
+      }
+    default:
+      return state
+  }
+}
+
 const reducers = combineReducers({
   searchResults: searchReducer,
   error: errorReducer,
   profile: profileIDReducer,
-  likes: likeReducer
+  likes: likeReducer,
+  profileInfo: profileInfoReducer
 })
 
 export default reducers
