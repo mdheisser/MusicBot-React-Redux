@@ -40,6 +40,19 @@ class Profile < ApplicationRecord
     return tracks
   end
 
+  #return liked tracks when users access profile
+  def get_like(token)
+    tracks = self.likes.select {|like| like.category === 'track'}
+    if tracks.length > 0 && tracks.length <= 50
+      track_ids = tracks.map {|track| track.spotify_id}.join(',')
+    elsif tracks.length > 50
+      track_ids = tracks.last(50).map {|track| track.spotify_id}.join(',')
+    else
+      track_ids = ''
+    end
+    spotify_data = JSON.parse(fetch_tracks(token, track_ids))['tracks']
+  end
+
   private
 
   def fetch_recommend(token, track_ids, artist_ids)
@@ -54,6 +67,19 @@ class Profile < ApplicationRecord
         'seed_tracks': track_ids
       }
     end
+  end
+
+  def fetch_tracks(token, track_ids)
+    resp = Faraday.get('https://api.spotify.com/v1/tracks') do |req|
+      req.headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': token
+      }
+      req.params = {
+        'ids': track_ids
+      }
+    end
+    return resp.body
   end
 
 end
