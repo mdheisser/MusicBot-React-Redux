@@ -9,20 +9,20 @@ class Criteria extends Component {
     super();
     this.state = {
       render: false,
+      saved: false,
       searchResults: {},
       error: ''
     }
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
     const searchData = this.props.searchData
     fetch(`/api/spotify/search?q=${searchData.text}&type=${searchData.type}`)
-    .then(resp => resp.json()).then(json => {
+    .then(resp => resp.json()).then(json =>
       this.setState({
         searchResults: json,
         render: true
-      });
-      this.props.saveSearch(json)})
+      }))
       .catch(error => this.setState({
         error: error.body
     }))
@@ -32,60 +32,82 @@ class Criteria extends Component {
   returnItems = (result) => {
     let info = Object.values(result)[0]['items']
     if (Object.keys(result)[0] === 'artists') {
-      return {
-        artist_name: info[0].name,
-        popularity: info[0].popularity,
-        genres: info[0].genres.join(', ')
-      }
+      return info.map(artist => ({
+        imgURL: artist.images.length > 0 ? artist.images.slice(-1)[0].url : null,
+        name: artist.name,
+        popularity: artist.popularity,
+        genres: artist.genres.join(', '),
+        spotifyID: artist.id
+      }))
     } else if (Object.keys(result)[0] === 'tracks') {
-      return {
-        track_name: info[0].name,
-        artist: info[0].artists[0].name,
-        release_date: info[0].release_date
-      }
+      return info.map(track => ({
+        imgURL: track.album.images.length > 0 ? track.album.images.slice(-1)[0].url : null,
+        name: track.name,
+        artist: track.artists[0].name,
+        popularity: track.popularity,
+        spotifyID: track.id
+      })
+      )
     }
   }
 
   renderItemList = (result) => {
     const items = this.returnItems(result)
-    return(Object.keys(items).map((key) =>
-      <ListGroupItem header={key.split('_').join(' ')}>
-        {items[key]}
-      </ListGroupItem>
+    return(items.map((item) =>
+      (
+        <button id={item.spotifyID} onClick={this.selectListItem} className="list-group-item">
+          {delete item.spotifyID}
+          {Object.keys(item).map(key =>
+            key !== 'imgURL' ? <span>{key} - {item[key]} &nbsp;</span> : <img src={item[key]} height="42" width="42" />
+          )}
+        </button>
+      )
     ))
   }
 
-  renderResult = () => {
+  selectListItem = (e) => {
     let result;
-    result = this.state.searchResults;
-    if(Object.values(result)[0].items.length !== 0) {
-      return (
-        <ListGroup>
-          {this.renderItemList(result)}
-        </ListGroup>
-      )
-    } else {
-      return (
-        this.renderNone()
-      )}
+    const spotifyID = e.target.parentElement.id;
+    let results = this.state.searchResults;
+    result = Object.values(results)[0].items.filter(result => result.id === spotifyID)[0]
+    this.props.saveSearch(result)
+    this.setState({
+      saved: true
+    })
   }
 
-  renderNone = () => {
-    return (
-      <strong>
-        We can't fathom your keyword, please try again
-      </strong>
-    )
+  renderResult = (result) => {
+    if(Object.values(result)[0].items.length !== 0) {
+      return (
+        <div className="list-group">
+          {this.renderItemList(result)}
+        </div>
+      )
+    } else {
+      return null;
+    }
   }
 
   render() {
+    let renderedResult;
+    if(this.state.render && !this.state.saved) {
+      renderedResult = this.renderResult(this.state.searchResults)
+    } else if (this.state.saved) {
+      renderedResult = this.renderItemList(this.props.searchResults)
+    } else {
+      renderedResult = null
+    }
     return (
       <Jumbotron>
-        {this.state.render ? this.renderResult() : null}
-        <Button bsStyle='warning'
-          onClick={this.props.reshowForm} >Reset</Button>
+        {renderedResult}
       </Jumbotron>
     )
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    searchResults: state.searchResults
   }
 }
 
@@ -97,4 +119,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default connect(null, mapDispatchToProps)(Criteria);
+export default connect(mapStateToProps, mapDispatchToProps)(Criteria);
