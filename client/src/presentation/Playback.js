@@ -7,7 +7,7 @@ function Playback(props) {
       <Button onClick={props.showNextTrack} bsSize="medium">
         <Glyphicon glyph="forward" /> Next Song
       </Button>
-      <Button bsSize="medium">
+      <Button onClick={props.showPreviousTrack} bsSize="medium">
         <Glyphicon glyph="backward" /> Previous Song
       </Button>
     </div>
