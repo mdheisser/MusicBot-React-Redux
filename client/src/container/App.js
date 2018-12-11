@@ -7,6 +7,7 @@ import Navbar from '../presentation/Navbar'
 import ProfileContainer from '../presentation/ProfileContainer'
 import Welcome from '../presentation/WelcomePanel'
 import { createProfile } from '../actions/ProfileActions'
+import '../css/App.css'
 
 class App extends Component {
   constructor() {
