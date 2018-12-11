@@ -33,6 +33,14 @@ function likeAction(likes) {
   }
 }
 
+function signInAction(jsonResp) {
+  return {
+    type: 'signIn',
+    name: jsonResp.name,
+    likes: jsonResp.likes
+  }
+}
+
 //create profile and save profile ID to state
 export function createProfile(trackIDs, artistIDs) {
   const fetchData = {
@@ -63,5 +71,21 @@ export function saveLike(trackSpotifyID, profileID) {
     fetch(`/api/profiles/${profileID}/likes`, fetchData)
     .then(resp => resp.json())
     .then(json => dispatch(likeAction(json)))
+  }
+}
+
+export function signIn(name, email, profileID) {
+  const fetchData = {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      name: name,
+      email: email
+    })
+  }
+  return function(dispatch) {
+    fetch(`/api/profiles/${profileID}/signin`, fetchData)
+    .then(resp => resp.json())
+    .then(json => dispatch(signInAction(json)))
   }
 }
