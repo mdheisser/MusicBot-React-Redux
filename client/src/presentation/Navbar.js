@@ -5,7 +5,7 @@ const MusicNavbar = () =>
   <Navbar inverse collapseOnSelect>
   <Navbar.Header>
     <Navbar.Brand>
-      <a href="#brand">My MusicBot</a>
+      <a href="/">My MusicBot</a>
     </Navbar.Brand>
     <Navbar.Toggle />
   </Navbar.Header>

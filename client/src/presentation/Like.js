@@ -7,9 +7,6 @@ function Like(props) {
       <Button onClick={props.saveLike} bsSize="large">
         <Glyphicon glyph="thumbs-up" /> Save to my Profile
       </Button>
-      <Button bsSize="large">
-        <Glyphicon glyph="thumbs-down" /> Don't show me again
-      </Button>
     </div>
   )
 }

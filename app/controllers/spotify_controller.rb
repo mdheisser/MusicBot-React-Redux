@@ -13,7 +13,7 @@ class SpotifyController < ApplicationController
       req.params = {
         'q': search_q,
         'type': params['type'],
-        'limit': '1'
+        'limit': '10'
       }
     end
     render_result(resp)
