@@ -1,9 +1,10 @@
 Need to do:
--- sign up or log in form with spotify
 -- see profile: my likes and my inputs
 -- when dislike button is hit, new song is rendered
--- add animation background
--- add # scroll and react routes
+--log in with spotify
+-- fix search form
+-- fix CSS
+
 
 The code is written in ES6 as much as possible *
 
