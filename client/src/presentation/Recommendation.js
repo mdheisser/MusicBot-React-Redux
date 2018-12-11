@@ -3,7 +3,7 @@ import { Col } from 'react-bootstrap'
 import Like from '../presentation/Like'
 import Playback from '../presentation/Playback'
 
-const Recommendation = ({rec, iframeSRC, showNextTrack, saveLike}) => (
+const Recommendation = ({rec, showNextTrack, showPreviousTrack, saveLike, iframeSRC}) => (
   <React.Fragment>
     <Col xs={6} md={4}>
       <p>{rec.name}</p>
@@ -17,7 +17,7 @@ const Recommendation = ({rec, iframeSRC, showNextTrack, saveLike}) => (
       </iframe>
     </Col>
     <Col xsHidden md={4}>
-      <Playback showNextTrack={showNextTrack}/>
+      <Playback showNextTrack={showNextTrack} showPreviousTrack={showPreviousTrack}/>
       <Like saveLike={saveLike} />
     </Col>
   </React.Fragment>
