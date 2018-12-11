@@ -40,6 +40,10 @@
   flex-direction: row-reverse;
 }
 
+.nav::after {
+  height: 0;
+}
+
 button {
   background-color: white;
   font-size: 20px;

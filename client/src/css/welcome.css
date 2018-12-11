@@ -1,13 +1,13 @@
 .welcome-jumbo {
   background-image: url("./AE7i.gif");
-  height: 500px;
+  height: 600px;
   text-align: center;
-
+  margin: auto;
 }
 
 .welcome-jumbo h1 {
   color: rgb(255, 255, 251);
-  padding-top: 15%;
+  padding-top: 20%;
 }
 
 .welcome-jumbo p {
