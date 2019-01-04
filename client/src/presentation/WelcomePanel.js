@@ -5,15 +5,15 @@ import '../css/welcome.css'
 
 const Welcome = () => {
   return (
-    <Jumbotron bsClass="welcome-jumbo">
-      <h1>Hi, I am MusicBot</h1>
+    <div className="welcome-box">
+      <h1>This is MusicBot</h1>
       <p>
-        Give me an artist or song, and I recommend you similar songs to listen to
+        Based on your favorite artist or song, it tells you what to listen to next.
       </p>
       <button className="start-button">
         <Link to="/start">Get Started</Link>
       </button>
-    </Jumbotron>
+    </div>
   )
 }
 

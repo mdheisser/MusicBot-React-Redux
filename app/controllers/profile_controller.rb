@@ -2,7 +2,7 @@ class ProfileController < ApplicationController
   before_action :get_token, only: [:recommend, :sign_in]
   before_action :get_profile, only: [:recommend, :save, :like, :sign_in]
 
-  #when get profile is clicked, create profile in db
+  #when get song is clicked, create profile in db
   def create
     @profile = Profile.create
     artist_ids = params[:artists].split('%20')
@@ -36,13 +36,15 @@ class ProfileController < ApplicationController
 
   #render liked tracks when users access profile
   def sign_in
+    binding.pry
     @profile.name = params[:name]
     @profile.email = params[:email]
     @profile.save
+    likes = @profile.get_like(@token)
     render json: {
       'name': @profile.name,
-      'likes': @profile.get_like(@token)
-      }
+      'likes': likes
+    }
   end
 
   private

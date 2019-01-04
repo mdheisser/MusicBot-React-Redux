@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import Dropdown from '../presentation/Dropdown'
 import Criteria from './Criteria';
 import { Row, Jumbotron, Alert, Button } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import '../css/Search.css'
+import { saveCategory } from '../actions/SearchActions'
 
-export default class SearchContainer extends Component {
+class SearchContainer extends Component {
   constructor() {
     super();
     this.state = {
       search: {
         text: '',
-        type: '',
+        type: 'track',
       },
       showForm: true,
       showAlert: false,
       buttons: {
         artist: false,
-        track: false
+        track: true
       }
     }
     this.reshowForm = this.reshowForm.bind(this)
@@ -44,17 +46,7 @@ export default class SearchContainer extends Component {
         [event.target.name]: !this.state.buttons[event.target.name]
       }
     })
-  }
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-    if(this.state.search.type === '' || this.state.search.text === '') {
-      this.setAlert();
-    } else {
-      this.setState({
-        showForm: false
-      })
-    }
+    this.props.saveCategory(event.target.name)
   }
 
   showAlert = () => {
@@ -78,8 +70,7 @@ export default class SearchContainer extends Component {
   showForm = () => {
     return(
       <>
-        <h4>Search</h4>
-        <form onSubmit={this.handleSubmit} >
+        <form>
           <div className="btn-group">
             <button type="button" name="artist"
               className={this.state.buttons.artist ? 'btn btn-default' + ' clicked' : 'btn btn-default'}
@@ -92,9 +83,8 @@ export default class SearchContainer extends Component {
           <div className="search-input">
             <input type="text"
               value={this.searchText}
-              placeholder="Keywords"
+              placeholder="Your artist or song"
               onChange={this.handleSearchInput} />
-              <input type="submit" value="Add Criteria" />
           </div>
         </form>
       </>
@@ -123,6 +113,9 @@ export default class SearchContainer extends Component {
     }
     return (
       <div className="container-fluid">
+        <div className="page-header">
+          <h4>First, tell us your song or artist</h4>
+        </div>
         {this.showForm()}
         {renderSearchResult}
         <Row>
@@ -134,3 +127,11 @@ export default class SearchContainer extends Component {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveCategory: (category) => dispatch(saveCategory(category))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SearchContainer)

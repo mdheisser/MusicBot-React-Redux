@@ -1,5 +1,5 @@
 import React from 'react';
-import { Jumbotron, Grid, Row, Col } from 'react-bootstrap'
+import { Jumbotron, Row } from 'react-bootstrap'
 import Profile from '../container/Profile'
 
 function ProfileContainer (props) {

@@ -37,7 +37,7 @@
 
 .playback-button-box {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
 }
 
 .nav::after {

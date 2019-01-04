@@ -1,0 +1,25 @@
+.rec-container {
+  display: flex;
+  height: 500px;
+  justify-content: space-between;
+  align-items: center;
+  background: rgb(214, 255, 215);
+}
+
+.rec-info {
+  width: 25%;
+  font-weight: 400;
+}
+
+.rec-player {
+  width: 35%;
+}
+
+.rec-form {
+  width: 25%;
+}
+
+iframe {
+  border-radius: 5px;
+  margin: 5px;
+}

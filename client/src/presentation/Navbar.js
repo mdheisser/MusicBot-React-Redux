@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap'
 
-const MusicNavbar = () =>
+const MusicNavbar = ({profileID}) =>
   <Navbar inverse collapseOnSelect>
   <Navbar.Header>
     <Navbar.Brand>
@@ -11,11 +11,11 @@ const MusicNavbar = () =>
   </Navbar.Header>
   <Navbar.Collapse>
     <Nav>
-      <NavItem eventKey={1} href="#">
+      <NavItem eventKey={1} href={`/profiles/${profileID}`}>
         My Profile
       </NavItem>
-      <NavItem eventKey={2} href="#">
-        My songs
+      <NavItem eventKey={2} href="/start">
+        Search
       </NavItem>
       <NavItem eventKey={2} href="#">
         Connect to Spotify
@@ -23,7 +23,7 @@ const MusicNavbar = () =>
     </Nav>
     <Nav pullRight>
       <NavItem eventKey={1} href="#">
-        About Us
+        About Me
       </NavItem>
     </Nav>
   </Navbar.Collapse>

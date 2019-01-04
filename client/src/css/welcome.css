@@ -1,24 +1,37 @@
-.welcome-jumbo {
+.welcome-box {
   background-image: url("./AE7i.gif");
-  height: 600px;
-  text-align: center;
-  margin: auto;
+  height: 650px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.welcome-jumbo h1 {
+h1 {
   color: rgb(255, 255, 251);
-  padding-top: 20%;
+  text-align: center;
+  display: block;
+  vertical-align: middle;
 }
 
-.welcome-jumbo p {
+.welcome-box p {
   font-size: 15px;
   color: rgb(255, 255, 251);
+  text-align: center;
+  display: block;
+  vertical-align: middle;
 }
 
 .start-button {
   background-color: white;
-  font-size: 20px !important;
-  font-weight: 15px !important;
-  padding: 15px 32px;
+  font-size: 20px;
+  font-weight: 15px;
   border-radius: 5px;
+  margin: 5px;
+  vertical-align: middle;
+}
+
+.start-button a {
+  text-align: center;
+  margin: auto;
 }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactDOM from 'react-dom';
-import { receiveError, saveLike, signIn } from '../actions/ProfileActions'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { receiveError, saveLike } from '../actions/ProfileActions'
 import ProfileForm from '../presentation/ProfileForm'
 import Recommendation from '../presentation/Recommendation'
-import ProfilePage from '../presentation/ProfilePage'
 
 class Profile extends Component {
   constructor() {
@@ -21,7 +21,8 @@ class Profile extends Component {
   //show result based on state
   showResult = () => {
     const rec = this.state.rec[this.state.recIndex]
-    const iframeID = rec.uri.split(':')[2]
+    let iframeID;
+    if(rec) {iframeID = rec.uri.split(':')[2]}
     const iframeSRC = `https://open.spotify.com/embed/track/${iframeID}`
     return (
       <Recommendation rec={rec} showNextTrack={this.showNextTrack}
@@ -76,8 +77,7 @@ class Profile extends Component {
   }
 
   submitSignIn = (name, email) => {
-    const profileID = this.props.profile.profileID
-    this.props.submitProfileForm(name, email, profileID)
+    this.props.submitProfileForm(name, email)
     this.setState({
       showForm: false,
       loggedIn: true
@@ -94,17 +94,16 @@ class Profile extends Component {
 
   render() {
     let profile;
+    let profileID = this.props.profile.profileID
     if(this.state.showForm && !this.state.loggedIn) {
-      profile = <ProfileForm submit={this.submitSignIn} />
-    } else if (this.state.loggedIn) {
-      profile = <ProfilePage />
+      profile = <ProfileForm submit={this.submitSignIn} profileID={profileID}/>
     } else {
       profile = null
     }
 
     return (
       <React.Fragment>
-        <h5>We Recommend: </h5>
+        <h4>Your tracks based on {this.props.searchResults.name}:</h4>
         {this.state.showRec ? this.showResult() : null}
         {profile}
       </React.Fragment>
@@ -125,7 +124,11 @@ const mapDispatchToProps = (dispatch) => {
   return {
     error: (error) => dispatch(receiveError(error)),
     like: (trackID, profileID) => dispatch(saveLike(trackID, profileID)),
-    submitProfileForm: (name, email, profileID) => dispatch(signIn(name, email, profileID))
+    submitProfileForm: (name, email) => dispatch({
+      type: 'saveName',
+      name: name,
+      email: email
+    })
   }
 }
 

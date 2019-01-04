@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { FormGroup, FormControl, Form, ControlLabel, Button } from 'react-bootstrap'
 
 export default class ProfileForm extends Component {
@@ -17,7 +18,6 @@ export default class ProfileForm extends Component {
   handleSubmit = () => {
     const name = this.state.name
     const email = this.state.email
-    const profileID = this.props.profileID
     this.props.submit(name, email)
   }
 
@@ -28,6 +28,7 @@ export default class ProfileForm extends Component {
   }
 
   render() {
+    const profileID = this.props.profileID;
     return (
       <>
         <button onClick={this.spotifyAuth}>
@@ -45,8 +46,9 @@ export default class ProfileForm extends Component {
               type="email" placeholder="jane.doe@example.com"
               value={this.state.email} onChange={this.handleChange} />
           </FormGroup>{' '}
-          <Button type="submit" onClick={this.submitForm}>
-            Create Profile</Button>
+          <Button type="submit" onClick={this.handleSubmit}>
+            <Link to={`/profiles/${profileID}`}>
+              See My Profile</Link></Button>
         </Form>
       </>
     )

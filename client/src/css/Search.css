@@ -10,8 +10,18 @@
   background-color: rgb(153, 204, 255) !important;
 }
 
-.search-input input[type=submit] {
-  height: 2.5em;
+.get-song-button {
   border-radius: 5px;
-  margin: 5px 0px 5px 0px;
+  margin: auto;
+  text-align: center;
+  background-color: rgb(51, 153, 255);
+}
+
+.get-song-button > a {
+  color: white !important;
+  font-size: 15px;
+}
+
+.get-song-button > a:hover, a:active {
+  font-size: 17px;
 }

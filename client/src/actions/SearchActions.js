@@ -25,3 +25,10 @@ export function storeSearch(searchResult) {
     result: searchResult,
   }
 }
+
+export function saveCategory(category) {
+  return {
+    type: 'saveCategory',
+    category: category
+  }
+}

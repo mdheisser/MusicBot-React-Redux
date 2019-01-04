@@ -39,12 +39,36 @@ function likeReducer(state=[], action) {
   }
 }
 
-function profileInfoReducer(state = {}, action) {
+//get profile likes when ProfilePage mounts
+function profileInfoReducer(state = {loggedIn: false}, action) {
   switch (action.type) {
     case 'signIn':
       return {
         name: action.name,
-        likes: action.likes
+        likes: action.likes,
+        loggedIn: true
+      }
+    default:
+      return state
+  }
+}
+
+function categoryReducer(state="track", action) {
+  switch (action.type) {
+    case 'saveCategory':
+      return action.category;
+    default:
+      return state;
+  }
+}
+
+//when user sign up / log in with form; save user name and email to store
+function profileNameReducer(state={}, action) {
+  switch (action.type) {
+    case 'saveName':
+      return {
+        name: action.name,
+        email: action.email
       }
     default:
       return state
@@ -56,7 +80,9 @@ const reducers = combineReducers({
   error: errorReducer,
   profile: profileIDReducer,
   likes: likeReducer,
-  profileInfo: profileInfoReducer
+  profileInfo: profileInfoReducer,
+  searchCategory: categoryReducer,
+  profileName: profileNameReducer
 })
 
 export default reducers

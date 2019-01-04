@@ -83,6 +83,7 @@ export function signIn(name, email, profileID) {
       email: email
     })
   }
+  debugger;
   return function(dispatch) {
     fetch(`/api/profiles/${profileID}/signin`, fetchData)
     .then(resp => resp.json())

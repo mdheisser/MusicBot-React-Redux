@@ -42,7 +42,8 @@ class Profile < ApplicationRecord
 
   #return liked tracks when users access profile
   def get_like(token)
-    tracks = self.likes.select {|like| like.category === 'track'}
+    binding.pry
+    tracks = self.likes.select {|like| like.category == 'track'}
     if tracks.length > 0 && tracks.length <= 50
       track_ids = tracks.map {|track| track.spotify_id}.join(',')
     elsif tracks.length > 50

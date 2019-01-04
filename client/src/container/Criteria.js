@@ -15,59 +15,84 @@ class Criteria extends Component {
     }
   }
 
+  //https://developer.mozilla.org/en-US/docs/Web/API/AbortController
+  controller = new AbortController();
+
   componentDidUpdate() {
-    const searchData = this.props.searchData
-    fetch(`/api/spotify/search?q=${searchData.text}&type=${searchData.type}`)
-    .then(resp => resp.json()).then(json =>
-      this.setState({
-        searchResults: json,
-        render: true
+    if(!this.state.saved) {
+      const searchData = this.props.searchData
+      fetch(`/api/spotify/search?q=${searchData.text}&type=${searchData.type}`,
+      {signal: this.controller.signal})
+      .then(resp => resp.json()).then(json =>
+        this.setState({
+          searchResults: json,
+          render: true
+        }))
+        .catch(error => this.setState({
+          error: error.body
       }))
-      .catch(error => this.setState({
-        error: error.body
-    }))
+    }
+  }
+
+  componentWillUnmount() {
+    this.controller.abort();
   }
 
   //organize data into desirable format according to search type
   returnItems = (result) => {
     let info = Object.values(result)[0]['items']
     if (Object.keys(result)[0] === 'artists') {
-      return info.map(artist => ({
-        imgURL: artist.images.length > 0 ? artist.images.slice(-1)[0].url : null,
-        name: artist.name,
-        popularity: artist.popularity,
-        genres: artist.genres.join(', '),
-        spotifyID: artist.id
-      }))
+      return info.map(artist => this.returnItemObject('artist', artist))
     } else if (Object.keys(result)[0] === 'tracks') {
-      return info.map(track => ({
-        imgURL: track.album.images.length > 0 ? track.album.images.slice(-1)[0].url : null,
-        name: track.name,
-        artist: track.artists[0].name,
-        popularity: track.popularity,
-        spotifyID: track.id
-      })
-      )
+      return info.map(track => this.returnItemObject('track', track))
     }
+  }
+
+  returnItemObject = (key, item) => {
+    if(key === 'artist') {
+      return ({
+        imgURL: item.images.length > 0 ? item.images.slice(-1)[0].url : null,
+        name: item.name,
+        popularity: item.popularity,
+        genres: item.genres.join(', '),
+        spotifyID: item.id
+      })
+
+    } else if (key === 'track') {
+      return {
+        imgURL: item.album.images.length > 0 ? item.album.images.slice(-1)[0].url : null,
+        name: item.name,
+        artist: item.artists[0].name,
+        popularity: item.popularity,
+        spotifyID: item.id
+      }
+    } else {
+      return null;
+    }
+  }
+
+  itemList = (item) => {
+    let copy = item;
+    return (
+      <button id={copy.spotifyID} onClick={this.selectListItem} className="list-group-item">
+        {delete copy.spotifyID}
+        {Object.keys(copy).map(key =>
+          key !== 'imgURL' ? <span>{key} - {copy[key]} &nbsp;</span> : <img src={copy[key]} height="42" width="42" />
+        )}
+      </button>
+    )
   }
 
   renderItemList = (result) => {
     const items = this.returnItems(result)
-    return(items.map((item) =>
-      (
-        <button id={item.spotifyID} onClick={this.selectListItem} className="list-group-item">
-          {delete item.spotifyID}
-          {Object.keys(item).map(key =>
-            key !== 'imgURL' ? <span>{key} - {item[key]} &nbsp;</span> : <img src={item[key]} height="42" width="42" />
-          )}
-        </button>
-      )
-    ))
+    return(items.map((item) => this.itemList(item)))
   }
 
+  //save selected search to store
   selectListItem = (e) => {
     let result;
-    const spotifyID = e.target.parentElement.id;
+    let spotifyID;
+    e.target.tagName !== 'BUTTON' ? spotifyID = e.target.parentElement.id : spotifyID = e.target.id;
     let results = this.state.searchResults;
     result = Object.values(results)[0].items.filter(result => result.id === spotifyID)[0]
     this.props.saveSearch(result)
@@ -93,7 +118,11 @@ class Criteria extends Component {
     if(this.state.render && !this.state.saved) {
       renderedResult = this.renderResult(this.state.searchResults)
     } else if (this.state.saved) {
-      renderedResult = this.renderItemList(this.props.searchResults)
+      let result = this.props.searchResults
+      renderedResult = this.itemList(
+        this.returnItemObject(
+          this.props.category, this.props.searchResults
+        ))
     } else {
       renderedResult = null
     }
@@ -107,7 +136,8 @@ class Criteria extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    searchResults: state.searchResults
+    searchResults: state.searchResults,
+    category: state.searchCategory
   }
 }
 

@@ -8,6 +8,8 @@ import ProfileContainer from '../presentation/ProfileContainer'
 import Welcome from '../presentation/WelcomePanel'
 import { createProfile } from '../actions/ProfileActions'
 import '../css/App.css'
+import ProfilePage from './ProfilePage'
+
 
 class App extends Component {
   constructor() {
@@ -21,33 +23,41 @@ class App extends Component {
     const result = this.props.searchResults
     var trackIDs = []
     var artistIDs = []
-    var keyword = Object.keys(result)[0]
-    if(keyword === 'tracks') {
-      var track = result['tracks']['items'][0]
+    var keyword = this.props.searchCategory
+    if(keyword === 'track') {
+      var track = result
       trackIDs.push(track.id)
-    } else if (keyword === 'artists') {
-      var artist = result['artists']['items'][0]
+    } else if (keyword === 'artist') {
+      var artist = result
       artistIDs.push(artist.id)
     }
-    //create new profile in db and get profile ID
+    //if signed in, add new like to profile and get rec
+    //if not, create new profile in db and get profile ID
     this.props.createProfile(trackIDs, artistIDs);
   }
 
   render() {
+    let profileID;
+    if (this.props.profile.showProfile) {
+      profileID = this.props.profile.profileID
+    } else {
+      profileID = ""
+    }
     return (
       <Router>
         <div className="App">
-          <Navbar />
+          <Navbar profileID={this.props.profile.profileID} />
           <Route exact path="/" render={Welcome} />
           <div className="container-fluid">
-            <Grid>
-              <Route exact path="/start" render={
-                  routeProps => <SearchContainer {...routeProps}
-                  getProfile={this.getProfile} />}/>
-                <Route exact path="/recommend" render={routeProps =>
-                    <ProfileContainer {...routeProps}
-                    profile={this.props.profile.showProfile} />} />
-            </Grid>
+            <Route exact path="/start" render={
+                routeProps => <SearchContainer {...routeProps}
+                getProfile={this.getProfile} />}/>
+            <Route exact path="/recommend" render={routeProps =>
+                <ProfileContainer {...routeProps}
+                profile={this.props.profile.showProfile} />} />
+            <Route path={`/profiles/${profileID}`}
+          render={routeProps => <ProfilePage {...routeProps}
+          info={this.props.profileInfo} />} />
           </div>
         </div>
       </Router>
@@ -59,14 +69,17 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
-    profile: state.profile
+    profile: state.profile,
+    profileInfo: state.profileInfo,
+    searchCategory: state.searchCategory
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     createProfile: (trackIDs, artistIDs) => dispatch(
-      createProfile(trackIDs, artistIDs))
+      createProfile(trackIDs, artistIDs)),
+
   }
 }
 
