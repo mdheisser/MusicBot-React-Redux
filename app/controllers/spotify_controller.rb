@@ -1,5 +1,5 @@
 class SpotifyController < ApplicationController
-  before_action :get_token
+  before_action :get_token, only: :search
 
   def search
     # organize search q into desired format if more than one word
@@ -17,6 +17,19 @@ class SpotifyController < ApplicationController
       }
     end
     render_result(resp)
+  end
+
+  def save_search
+    if params[:type] == 'artist'
+      if(!Artist.exists?(spotify_id: params[:spotifyID]))
+        @result = Artist.create(spotify_id: params[:spotifyID], name: params[:name], spotify_url: params[:spotifyURL])
+      end
+    else
+      if(!Track.exists?(spotify_id: params[:spotifyID]))
+        @result = Track.create(spotify_id: params[:spotifyID], name: params[:name], spotify_url: params[:spotifyURL])
+      end
+    end
+    render plain: 'OK'
   end
 
   private
