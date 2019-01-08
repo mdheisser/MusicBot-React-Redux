@@ -1,6 +1,6 @@
 class Artist < ApplicationRecord
-  has_many :likes
-  has_many :profiles, through: :likes
+  has_many :like_artists
+  has_many :profiles, through: :like_artists
   validates :spotify_id, uniqueness: true
 
   def get_top_tracks(token)

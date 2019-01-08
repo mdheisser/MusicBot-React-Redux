@@ -1,6 +1,6 @@
 class Track < ApplicationRecord
-  has_many :likes
-  has_many :profiles, through: :likes
+  has_many :like_tracks
+  has_many :profiles, through: :like_tracks
   validates :spotify_id, uniqueness: true
 
   def get_features(token)
