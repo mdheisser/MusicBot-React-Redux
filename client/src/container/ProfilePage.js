@@ -1,27 +1,60 @@
 import React, { Component } from 'react';
-import { signIn } from '../actions/ProfileActions'
 import { connect } from 'react-redux'
 
 
 class ProfilePage extends Component {
   constructor() {
     super();
+    this.state = {
+      loggedIn: false,
+      tracks: []
+    }
   }
 
   componentDidMount() {
     const profileID = this.props.profile.profileID
     const name = this.props.profileName.name;
     const email = this.props.profileName.email;
-    this.props.submitProfileForm(name, email, profileID)
+    const data = {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        name: name,
+        email: email
+      })
+    }
+    fetch(`/api/profiles/${profileID}/signin`, data)
+    .then(resp => resp.json())
+    .then(json => this.setState({
+      tracks: json,
+      loggedIn: true
+    }))
+    //update store signIn status
+    this.props.signIn();
   }
 
   render() {
-    let name;
-    if(this.props.profileInfo.loggedIn) {
-      name = this.props.profileInfo.name
+    let name, tracks = [];
+    debugger;
+    if(this.state.loggedIn) {
+      name = this.props.profileName.name
+      tracks = this.state.tracks
     }
     return (
-        <h2>Hello {name}</h2>
+      <>
+        <div className="page-header">
+          <h2>Hello {name}</h2>
+          <p>Your likes: </p>
+        </div>
+        <div className="list-group">
+          {tracks.map(track =>
+              <a className="list-group-item" href={track.spotify_url}
+                key={track.id}>
+                {track.name}
+              </a>
+          )}
+        </div>
+      </>
     )
   }
 }
@@ -36,8 +69,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    submitProfileForm: (name, email, profileID) =>
-    dispatch(signIn(name, email, profileID))
+    signIn: () => dispatch({type: 'signIn'})
   }
 }
 
