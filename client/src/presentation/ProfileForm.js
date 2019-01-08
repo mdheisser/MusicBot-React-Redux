@@ -11,10 +11,6 @@ export default class ProfileForm extends Component {
     }
   }
 
-  spotifyAuth = () => {
-
-  }
-
   handleSubmit = () => {
     const name = this.state.name
     const email = this.state.email
@@ -47,7 +43,7 @@ export default class ProfileForm extends Component {
               value={this.state.email} onChange={this.handleChange} />
           </FormGroup>{' '}
           <Button type="submit" onClick={this.handleSubmit}>
-            <Link to={`/profiles/${profileID}`}>
+            <Link to={`/profiles/${profileID}`} onClick={this.handleSubmit}>
               See My Profile</Link></Button>
         </Form>
       </>

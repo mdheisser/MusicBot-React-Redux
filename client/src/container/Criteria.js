@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Jumbotron, ListGroup, ListGroupItem, Button } from 'react-bootstrap'
-import { storeSearch } from '../actions/SearchActions'
+import { storeSearch, saveSearch } from '../actions/SearchActions'
 
 
 class Criteria extends Component {
@@ -57,7 +57,6 @@ class Criteria extends Component {
         genres: item.genres.join(', '),
         spotifyID: item.id
       })
-
     } else if (key === 'track') {
       return {
         imgURL: item.album.images.length > 0 ? item.album.images.slice(-1)[0].url : null,
@@ -95,7 +94,8 @@ class Criteria extends Component {
     e.target.tagName !== 'BUTTON' ? spotifyID = e.target.parentElement.id : spotifyID = e.target.id;
     let results = this.state.searchResults;
     result = Object.values(results)[0].items.filter(result => result.id === spotifyID)[0]
-    this.props.saveSearch(result)
+    this.props.saveSearch(result, this.props.searchData.type)
+    this.props.storeSearch(result)
     this.setState({
       saved: true
     })
@@ -143,8 +143,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveSearch: (searchResult) =>
-      dispatch(storeSearch(searchResult))
+    saveSearch: (searchResult, type) =>
+      dispatch(saveSearch(searchResult, type)),
+    storeSearch: (searchResult) => dispatch(storeSearch(searchResult))
   }
 }
 
