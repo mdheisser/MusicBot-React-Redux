@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_05_014126) do
+ActiveRecord::Schema.define(version: 2019_01_08_150542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,12 +25,16 @@ ActiveRecord::Schema.define(version: 2018_12_05_014126) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "likes", force: :cascade do |t|
-    t.string "category"
-    t.integer "profile_id"
+  create_table "like_artists", force: :cascade do |t|
     t.integer "artist_id"
+    t.integer "profile_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "like_tracks", force: :cascade do |t|
+    t.integer "profile_id"
     t.integer "track_id"
-    t.string "spotify_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
