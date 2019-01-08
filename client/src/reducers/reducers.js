@@ -30,22 +30,11 @@ function profileIDReducer(state={showProfile: false, profileID: ''}, action) {
   }
 }
 
-function likeReducer(state=[], action) {
-  switch (action.type) {
-    case 'saveLike':
-      return action.likes;
-    default:
-      return state;
-  }
-}
-
 //get profile likes when ProfilePage mounts
 function profileInfoReducer(state = {loggedIn: false}, action) {
   switch (action.type) {
     case 'signIn':
       return {
-        name: action.name,
-        likes: action.likes,
         loggedIn: true
       }
     default:
@@ -79,7 +68,6 @@ const reducers = combineReducers({
   searchResults: searchReducer,
   error: errorReducer,
   profile: profileIDReducer,
-  likes: likeReducer,
   profileInfo: profileInfoReducer,
   searchCategory: categoryReducer,
   profileName: profileNameReducer
