@@ -10,20 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_10_155416) do
+ActiveRecord::Schema.define(version: 2018_12_05_014126) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "artists", force: :cascade do |t|
     t.string "spotify_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "name"
+    t.string "spotify_url"
     t.string "genres"
     t.string "popularity"
-    t.string "name"
-  end
-
-  create_table "artists_profiles", id: false, force: :cascade do |t|
-    t.integer "artist_id", null: false
-    t.integer "profile_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "likes", force: :cascade do |t|
@@ -38,27 +37,20 @@ ActiveRecord::Schema.define(version: 2018_12_10_155416) do
 
   create_table "profiles", force: :cascade do |t|
     t.string "spotify_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "name"
     t.string "email"
-  end
-
-  create_table "profiles_tracks", id: false, force: :cascade do |t|
-    t.integer "profile_id", null: false
-    t.integer "track_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tracks", force: :cascade do |t|
     t.string "spotify_id"
+    t.string "name"
+    t.string "genres"
+    t.string "spotify_url"
+    t.string "artists"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "danceability"
-    t.float "acoustic"
-    t.float "energy"
-    t.float "valence"
-    t.string "genres"
-    t.string "name"
   end
 
 end
