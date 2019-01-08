@@ -26,18 +26,19 @@ function saveRecAction(rec) {
   }
 }
 
-function likeAction(likes) {
-  return {
-    type: 'saveLike',
-    likes: likes
-  }
-}
-
 function signInAction(jsonResp) {
   return {
     type: 'signIn',
     name: jsonResp.name,
     likes: jsonResp.likes
+  }
+}
+
+export function saveProfileInfo(name, email) {
+  return {
+    type: 'saveName',
+    name: name,
+    email: email
   }
 }
 
@@ -69,24 +70,5 @@ export function saveLike(trackSpotifyID, profileID) {
   }
   return function(dispatch) {
     fetch(`/api/profiles/${profileID}/likes`, fetchData)
-    .then(resp => resp.json())
-    .then(json => dispatch(likeAction(json)))
-  }
-}
-
-export function signIn(name, email, profileID) {
-  const fetchData = {
-    method: 'PATCH',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      name: name,
-      email: email
-    })
-  }
-  debugger;
-  return function(dispatch) {
-    fetch(`/api/profiles/${profileID}/signin`, fetchData)
-    .then(resp => resp.json())
-    .then(json => dispatch(signInAction(json)))
   }
 }
