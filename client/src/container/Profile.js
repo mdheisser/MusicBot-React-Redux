@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { receiveError, saveLike } from '../actions/ProfileActions'
+import { receiveError, saveLike, saveProfileInfo } from '../actions/ProfileActions'
 import ProfileForm from '../presentation/ProfileForm'
 import Recommendation from '../presentation/Recommendation'
 
@@ -77,7 +77,7 @@ class Profile extends Component {
   }
 
   submitSignIn = (name, email) => {
-    this.props.submitProfileForm(name, email)
+    this.props.saveProfile(name, email)
     this.setState({
       showForm: false,
       loggedIn: true
@@ -116,7 +116,6 @@ const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
     profile: state.profile,
-    likes: state.likes
   }
 }
 
@@ -124,11 +123,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     error: (error) => dispatch(receiveError(error)),
     like: (trackID, profileID) => dispatch(saveLike(trackID, profileID)),
-    submitProfileForm: (name, email) => dispatch({
-      type: 'saveName',
-      name: name,
-      email: email
-    })
+    saveProfile: (name, email) => dispatch(saveProfileInfo(name, email))
   }
 }
 

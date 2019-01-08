@@ -55,13 +55,11 @@ class App extends Component {
             <Route exact path="/recommend" render={routeProps =>
                 <ProfileContainer {...routeProps}
                 profile={this.props.profile.showProfile} />} />
-            <Route path={`/profiles/${profileID}`}
-          render={routeProps => <ProfilePage {...routeProps}
-          info={this.props.profileInfo} />} />
+            <Route exact path={`/profiles/${profileID}`}
+              render={routeProps => <ProfilePage {...routeProps} />} />
           </div>
         </div>
       </Router>
-
     );
   }
 }
