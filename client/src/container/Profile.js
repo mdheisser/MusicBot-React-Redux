@@ -61,11 +61,13 @@ class Profile extends Component {
 
   //after like button is clicked, save the liked track to db and associate it with the profile
   saveLike = () => {
-    const trackSpotifyID = this.state.rec.id
+    const trackSpotifyID = this.state.rec[this.state.recIndex].id
     this.props.like(trackSpotifyID, this.props.profile.profileID)
-    this.setState({
-      showForm: true
-    })
+    if(!this.props.loggedIn) {
+      this.setState({
+        showForm: true
+      })
+    }
   }
 
   fetchRecommend = () => {
@@ -100,7 +102,6 @@ class Profile extends Component {
     } else {
       profile = null
     }
-
     return (
       <React.Fragment>
         <h4>Your tracks based on {this.props.searchResults.name}:</h4>
@@ -116,6 +117,7 @@ const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
     profile: state.profile,
+    loggedIn: state.profileInfo.loggedIn
   }
 }
 

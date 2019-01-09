@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class ProfilePage extends Component {
   constructor() {
@@ -54,6 +54,9 @@ class ProfilePage extends Component {
               </a>
           )}
         </div>
+        <button className="btn btn-primary">
+          <Link to="/start">Back to browsing</Link>
+        </button>
       </>
     )
   }
