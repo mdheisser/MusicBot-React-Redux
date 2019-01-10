@@ -31,7 +31,7 @@ function profileIDReducer(state={showProfile: false, profileID: ''}, action) {
 }
 
 //get profile likes when ProfilePage mounts
-function profileInfoReducer(state = {loggedIn: false}, action) {
+function logInReducer(state = {loggedIn: false}, action) {
   switch (action.type) {
     case 'signIn':
       return {
@@ -68,7 +68,7 @@ const reducers = combineReducers({
   searchResults: searchReducer,
   error: errorReducer,
   profile: profileIDReducer,
-  profileInfo: profileInfoReducer,
+  loggedIn: logInReducer,
   searchCategory: categoryReducer,
   profileName: profileNameReducer
 })

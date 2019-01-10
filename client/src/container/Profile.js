@@ -117,7 +117,7 @@ const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
     profile: state.profile,
-    loggedIn: state.profileInfo.loggedIn
+    loggedIn: state.loggedIn
   }
 }
 
