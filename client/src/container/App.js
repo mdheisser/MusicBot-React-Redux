@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { Button, Grid, Row, Col } from 'react-bootstrap'
 import SearchContainer from './SearchContainer'
 import Navbar from '../presentation/Navbar'
 import ProfileContainer from '../presentation/ProfileContainer'
 import Welcome from '../presentation/WelcomePanel'
-import { createProfile } from '../actions/ProfileActions'
+import { createProfile, saveProfileInfo } from '../actions/ProfileActions'
 import '../css/App.css'
 import ProfilePage from './ProfilePage'
+import ProfileForm from '../presentation/ProfileForm'
 
 
 class App extends Component {
@@ -36,6 +37,10 @@ class App extends Component {
     this.props.createProfile(trackIDs, artistIDs);
   }
 
+  submitSignIn = (name, email) => {
+    this.props.saveProfile(name, email)
+  }
+
   render() {
     let profileID;
     if (this.props.profile.showProfile) {
@@ -46,7 +51,10 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Navbar profileID={this.props.profile.profileID} />
+          <Navbar profileID={this.props.profile.profileID}
+            loggedIn={this.props.loggedIn}
+            signIn={this.submitSignIn}
+            />
           <Route exact path="/" render={Welcome} />
           <div className="container-fluid">
             <Route exact path="/start" render={
@@ -57,6 +65,11 @@ class App extends Component {
                 profile={this.props.profile.showProfile} />} />
             <Route exact path={`/profiles/${profileID}`}
               render={routeProps => <ProfilePage {...routeProps} />} />
+            <Route exact path="/signin" render={routeProps =>
+                <ProfileForm {...routeProps} profileID={profileID}
+                  submit={this.submitSignIn}
+                  />} />
+            <Route exact path="/profiles" render={() => <Redirect to="/" />} />
           </div>
         </div>
       </Router>
@@ -68,7 +81,7 @@ const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
     profile: state.profile,
-    profileInfo: state.profileInfo,
+    loggedIn: state.loggedIn,
     searchCategory: state.searchCategory
   }
 }
@@ -77,7 +90,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createProfile: (trackIDs, artistIDs) => dispatch(
       createProfile(trackIDs, artistIDs)),
-
+    saveProfile: (name, email) => dispatch(saveProfileInfo(name, email))
   }
 }
 
