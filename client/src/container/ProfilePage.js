@@ -28,35 +28,46 @@ class ProfilePage extends Component {
     .then(json => this.setState({
       tracks: json,
       loggedIn: true
+    })).catch(() => this.setState({
+      loggedIn: false
     }))
     //update store signIn status
     this.props.signIn();
   }
 
-  render() {
-    let name, tracks = [];
-    debugger;
-    if(this.state.loggedIn) {
-      name = this.props.profileName.name
-      tracks = this.state.tracks
+  renderProfile = () => {
+    let name = this.props.profileName.name
+    let tracks = this.state.tracks
+    if (this.state.loggedIn) {
+      return (
+        <>
+          <div className="page-header">
+            <h2>Hello {name}</h2>
+            <p>Your likes: </p>
+          </div>
+          <div className="list-group">
+            {tracks.map(track =>
+                <a className="list-group-item" href={track.spotify_url}
+                  key={track.id}>
+                  {track.name}
+                </a>
+            )}
+          </div>
+          <button className="btn btn-primary">
+            <Link to="/start">Back to browsing</Link>
+          </button>
+        </>
+    )} else {
+      return (
+        <p>Start <Link to="/start">exploring music!</Link></p>
+      )
     }
+  }
+
+  render() {
     return (
       <>
-        <div className="page-header">
-          <h2>Hello {name}</h2>
-          <p>Your likes: </p>
-        </div>
-        <div className="list-group">
-          {tracks.map(track =>
-              <a className="list-group-item" href={track.spotify_url}
-                key={track.id}>
-                {track.name}
-              </a>
-          )}
-        </div>
-        <button className="btn btn-primary">
-          <Link to="/start">Back to browsing</Link>
-        </button>
+        {this.renderProfile()}
       </>
     )
   }
@@ -65,7 +76,7 @@ class ProfilePage extends Component {
 const mapStateToProps = (state) => {
   return {
     profile: state.profile,
-    profileInfo: state.profileInfo,
+    loggedIn: state.loggedIn,
     profileName: state.profileName
   }
 }
