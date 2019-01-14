@@ -33,8 +33,21 @@ class App extends Component {
       artistIDs.push(artist.id)
     }
     //if signed in, add new like to profile and get rec
-    //if not, create new profile in db and get profile ID
-    this.props.createProfile(trackIDs, artistIDs);
+    if(!this.props.loggedIn) {
+      this.props.createProfile(trackIDs, artistIDs);
+    } else {
+      //if not, create new profile in db and get profile ID
+      const data = {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(
+          {
+            tracks: trackIDs.join('%20'),
+            artists: artistIDs.join('%20'),
+          })
+      }
+      fetch(`/api/profiles/${this.props.profile.profileID}`, data)
+    }
   }
 
   submitSignIn = (name, email) => {

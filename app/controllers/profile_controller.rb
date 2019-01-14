@@ -1,13 +1,11 @@
 class ProfileController < ApplicationController
   before_action :get_token, only: :recommend
-  before_action :get_profile, only: [:recommend, :save, :like, :sign_in]
+  before_action :get_profile, only: [:recommend, :save, :like, :sign_in, :update]
 
   #when get song is clicked, create profile in db
   def create
     @profile = Profile.create
-    artist_ids = params[:artists].split('%20')
-    track_ids = params[:tracks].split('%20')
-    @profile.save_tracks_and_artists(artist_ids, track_ids)
+    save_likes
     render json: @profile
   end
 
@@ -16,6 +14,7 @@ class ProfileController < ApplicationController
   #renders spotify recommendation to Profile component
   def recommend
     tracks = @profile.get_rec(@token)
+    binding.pry
     tracks.each do |track|
       t = Track.find_or_create_by(spotify_id: track['id'])
       t.name = track['name']
@@ -37,6 +36,11 @@ class ProfileController < ApplicationController
     render plain: 'OK'
   end
 
+  def update
+    save_likes
+    render json: @profile
+  end
+
   #render liked tracks when users access profile
   def sign_in
     @profile.name = params[:name]
@@ -49,6 +53,12 @@ class ProfileController < ApplicationController
 
   def get_profile
     @profile = Profile.find_by(id: params[:profile_id])
+  end
+
+  def save_likes
+    artist_ids = params[:artists].split('%20')
+    track_ids = params[:tracks].split('%20')
+    @profile.save_tracks_and_artists(artist_ids, track_ids)
   end
 
 end

@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   post '/api/profiles/:profile_id/recommendations', to: 'profile#recommend'
   post '/api/profiles/:profile_id/likes', to: 'profile#like'
   patch '/api/profiles/:profile_id/signin', to: 'profile#sign_in'
+  patch '/api/profiles/:profile_id', to: 'profile#update'
 end

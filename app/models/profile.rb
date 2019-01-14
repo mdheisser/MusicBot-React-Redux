@@ -30,38 +30,21 @@ class Profile < ApplicationRecord
     track_ids = ''
     artist_ids = ''
     likes = self.tracks.count + self.artists.count
+    binding.pry
     if likes > 5
-      tracks = tracks.last(2)
-      artists = artists.last(2)
+      tracks = self.tracks.last(2)
+      artists = self.artists.last(2)
     end
     if self.tracks.count > 0
-      track_ids = self.tracks.map {|track| track.spotify_id}.join('%20')
+      track_ids = self.tracks.map {|track| track.spotify_id}.join(',')
     end
     if self.artists.count > 0
-      artist_ids = self.artists.map {|artist| artist.spotify_id}.join('%20')
+      artist_ids = self.artists.map {|artist| artist.spotify_id}.join(',')
     end
     resp = fetch_recommend(token, track_ids, artist_ids)
     tracks = JSON.parse(resp.body)['tracks']
     return tracks
   end
-
-  #return liked tracks when users access profile
-  # def get_like(token)
-  #   likes = self.likes.select {|like| like.category == 'track'}
-  #   tracks = []
-  #   likes.each do |like|
-  #     tracks << Track.find_by(spotify_id: like.spotify_id)
-  #   end
-  #   return tracks
-    # if tracks.length > 1 && tracks.length <= 50
-    #   track_ids = tracks.map {|track| track.spotify_id}.join(',')
-    # elsif tracks.length > 50
-    #   track_ids = tracks.last(50).map {|track| track.spotify_id}.join(',')
-    # else
-    #   track_ids = ''
-    # end
-    # spotify_data = JSON.parse(fetch_tracks(token, track_ids))['tracks']
-  # end
 
   private
 
