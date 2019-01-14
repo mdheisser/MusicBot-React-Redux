@@ -27,8 +27,6 @@ export default class ProfileForm extends Component {
     const profileID = this.props.profileID;
     return (
       <>
-        <button onClick={this.spotifyAuth}>
-          Connect with Spotify</button>
         <Form inline>
           <FormGroup controlId="formInlineName">
             <ControlLabel>Name</ControlLabel>{' '}
@@ -46,6 +44,10 @@ export default class ProfileForm extends Component {
             <Link to={`/profiles/${profileID}`} onClick={this.handleSubmit}>
               See My Profile</Link></Button>
         </Form>
+        <button className="spotify-button"
+          onClick={this.spotifyAuth}>
+          Connect to Spotify
+        </button>
       </>
     )
   }

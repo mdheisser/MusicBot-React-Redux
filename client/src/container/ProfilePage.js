@@ -40,7 +40,7 @@ class ProfilePage extends Component {
     let tracks = this.state.tracks
     if (this.state.loggedIn) {
       return (
-        <>
+        <div className="profile-page-container">
           <div className="page-header">
             <h2>Hello {name}</h2>
             <p>Your likes: </p>
@@ -56,7 +56,7 @@ class ProfilePage extends Component {
           <button className="btn btn-primary">
             <Link to="/start">Back to browsing</Link>
           </button>
-        </>
+        </div>
     )} else {
       return (
         <p>Start <Link to="/start">exploring music!</Link></p>

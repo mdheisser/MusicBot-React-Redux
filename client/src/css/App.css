@@ -2,11 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -26,15 +21,6 @@
   width: 500px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .playback-button-box {
   display: flex;
   flex-direction: row;
@@ -48,6 +34,30 @@ button {
   background-color: white;
   font-size: 20px;
   font-weight: 15px;
-  padding: 15px 32px;
+  padding: 5px 15px;
   border-radius: 5px;
+  margin-top: 5px;
+}
+
+button:hover, button:active {
+  background-color: grey;
+}
+
+.nav.navbar-nav li a {
+  color: grey;
+}
+
+.nav.navbar-nav li a:active {
+  color: white;
+}
+
+.container-fluid .jumbotron {
+  background-color: white;
+}
+
+.spotify-button {
+  font-size: 1em;
+  background-color: black;
+  color: white;
+  display: inline-block;
 }

@@ -26,14 +26,6 @@ function saveRecAction(rec) {
   }
 }
 
-function signInAction(jsonResp) {
-  return {
-    type: 'signIn',
-    name: jsonResp.name,
-    likes: jsonResp.likes
-  }
-}
-
 export function saveProfileInfo(name, email) {
   return {
     type: 'saveName',

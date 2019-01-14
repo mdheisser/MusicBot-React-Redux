@@ -31,12 +31,10 @@ function profileIDReducer(state={showProfile: false, profileID: ''}, action) {
 }
 
 //get profile likes when ProfilePage mounts
-function logInReducer(state = {loggedIn: false}, action) {
+function logInReducer(state = false, action) {
   switch (action.type) {
     case 'signIn':
-      return {
-        loggedIn: true
-      }
+      return true
     default:
       return state
   }

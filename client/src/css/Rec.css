@@ -7,19 +7,19 @@
 }
 
 .rec-info {
-  width: 25%;
+  width: 40%;
   font-weight: 400;
 }
 
 .rec-player {
-  width: 35%;
-}
-
-.rec-form {
-  width: 25%;
+  width: 60%;
 }
 
 iframe {
   border-radius: 5px;
   margin: 5px;
+}
+
+.profile-page-container button a {
+  color: white;
 }

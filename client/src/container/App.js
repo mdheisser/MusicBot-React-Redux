@@ -53,7 +53,6 @@ class App extends Component {
         <div className="App">
           <Navbar profileID={this.props.profile.profileID}
             loggedIn={this.props.loggedIn}
-            signIn={this.submitSignIn}
             />
           <Route exact path="/" render={Welcome} />
           <div className="container-fluid">

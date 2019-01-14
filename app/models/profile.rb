@@ -3,19 +3,24 @@ class Profile < ApplicationRecord
   has_many :like_artists
   has_many :tracks, through: :like_tracks
   has_many :artists, through: :like_artists
+  validates :email, uniqueness: true
 
   #associate tracks and artists with profile after user input
   def save_tracks_and_artists(artist_ids, track_ids)
     if artist_ids.length > 0
       artist_ids.each do |id|
         artist = Artist.find_or_create_by(spotify_id: id)
-        LikeArtist.create(profile_id: self.id, artist_id: artist.id)
+        if !self.artists.any? { |art| art.id == artist.id }
+          LikeArtist.create(profile_id: self.id, artist_id: artist.id)
+        end
       end
     end
     if track_ids.length > 0
       track_ids.each do |id|
         track = Track.find_or_create_by(spotify_id: id)
-        LikeTrack.create(profile_id: self.id, track_id: track.id)
+        if !self.tracks.any? { |tr| tr.id == track.id }
+          LikeTrack.create(profile_id: self.id, track_id: track.id)
+        end
       end
     end
     self.save

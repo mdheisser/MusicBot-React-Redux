@@ -104,7 +104,9 @@ class Profile extends Component {
     }
     return (
       <React.Fragment>
-        <h4>Your tracks based on {this.props.searchResults.name}:</h4>
+        <div className="page=header">
+          <h4>Your tracks based on {this.props.searchResults.name}:</h4>
+        </div>
         {this.state.showRec ? this.showResult() : null}
         {profile}
       </React.Fragment>
