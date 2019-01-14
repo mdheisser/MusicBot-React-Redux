@@ -3,7 +3,7 @@ class Profile < ApplicationRecord
   has_many :like_artists
   has_many :tracks, through: :like_tracks
   has_many :artists, through: :like_artists
-  validates :email, uniqueness: true
+  validates :email, uniqueness: true, allow_blank: true
 
   #associate tracks and artists with profile after user input
   def save_tracks_and_artists(artist_ids, track_ids)
