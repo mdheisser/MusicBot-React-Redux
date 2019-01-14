@@ -14,7 +14,6 @@ class ProfileController < ApplicationController
   #renders spotify recommendation to Profile component
   def recommend
     tracks = @profile.get_rec(@token)
-    binding.pry
     tracks.each do |track|
       t = Track.find_or_create_by(spotify_id: track['id'])
       t.name = track['name']

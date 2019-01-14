@@ -30,7 +30,6 @@ class Profile < ApplicationRecord
     track_ids = ''
     artist_ids = ''
     likes = self.tracks.count + self.artists.count
-    binding.pry
     if likes > 5
       tracks = self.tracks.last(2)
       artists = self.artists.last(2)
