@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { Jumbotron, ListGroup, ListGroupItem, Button } from 'react-bootstrap'
-import { storeSearch, saveSearch } from '../actions/SearchActions'
+import { Jumbotron, } from 'react-bootstrap'
+import { saveSearch } from '../actions/SearchActions'
 
 
 class Criteria extends Component {
@@ -95,7 +95,7 @@ class Criteria extends Component {
     let results = this.state.searchResults;
     result = Object.values(results)[0].items.filter(result => result.id === spotifyID)[0]
     this.props.saveSearch(result, this.props.searchData.type)
-    this.props.storeSearch(result)
+    // this.props.storeSearch(result)
     this.setState({
       saved: true
     })
@@ -120,9 +120,7 @@ class Criteria extends Component {
     } else if (this.state.saved) {
       let result = this.props.searchResults
       renderedResult = this.itemList(
-        this.returnItemObject(
-          this.props.category, this.props.searchResults
-        ))
+        this.returnItemObject(this.props.category, result))
     } else {
       renderedResult = null
     }
@@ -145,7 +143,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     saveSearch: (searchResult, type) =>
       dispatch(saveSearch(searchResult, type)),
-    storeSearch: (searchResult) => dispatch(storeSearch(searchResult))
   }
 }
 

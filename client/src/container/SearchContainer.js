@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import Dropdown from '../presentation/Dropdown'
 import Criteria from './Criteria';
-import { Row, Jumbotron, Alert, Button } from 'react-bootstrap'
+import { Row, Alert } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import '../css/Search.css'
 import { saveCategory } from '../actions/SearchActions'

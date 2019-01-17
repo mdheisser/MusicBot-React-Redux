@@ -12,20 +12,6 @@ export function receiveError(error) {
   }
 }
 
-function getRec(rec) {
-  return {
-    type: 'getRec',
-    recommendation: rec
-  }
-}
-
-function saveRecAction(rec) {
-  return {
-    type: 'saveRec',
-    trackID: rec.trackID
-  }
-}
-
 export function saveProfileInfo(name, email) {
   return {
     type: 'saveName',
@@ -50,17 +36,5 @@ export function createProfile(trackIDs, artistIDs) {
     fetch(`/api/profiles`, fetchData).then(resp => resp.json())
     .then(json => dispatch(profileAction(json.id))).catch(
       error => dispatch(receiveError(error)))
-  }
-}
-
-//persist the likes data (type and spotify id) to state
-export function saveLike(trackSpotifyID, profileID) {
-  const fetchData = {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({spotifyID: trackSpotifyID})
-  }
-  return function(dispatch) {
-    fetch(`/api/profiles/${profileID}/likes`, fetchData)
   }
 }

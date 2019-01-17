@@ -22,7 +22,7 @@ class Profile extends Component {
   showResult = () => {
     const rec = this.state.rec[this.state.recIndex]
     let iframeID;
-    if(rec) {iframeID = rec.uri.split(':')[2]}
+    if(rec && rec.uri) {iframeID = rec.uri.split(':')[2]}
     const iframeSRC = `https://open.spotify.com/embed/track/${iframeID}`
     return (
       <Recommendation rec={rec} showNextTrack={this.showNextTrack}
@@ -62,12 +62,22 @@ class Profile extends Component {
   //after like button is clicked, save the liked track to db and associate it with the profile
   saveLike = () => {
     const trackSpotifyID = this.state.rec[this.state.recIndex].id
-    this.props.like(trackSpotifyID, this.props.profile.profileID)
+    this.likeToApi(trackSpotifyID, this.props.profile.profileID)
     if(!this.props.loggedIn) {
       this.setState({
         showForm: true
       })
     }
+  }
+
+  //persist the likes data (type and spotify id) to state
+  likeToApi = (trackSpotifyID, profileID) => {
+    const fetchData = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({spotifyID: trackSpotifyID})
+    }
+    fetch(`/api/profiles/${profileID}/likes`, fetchData)
   }
 
   fetchRecommend = () => {
@@ -126,7 +136,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     error: (error) => dispatch(receiveError(error)),
-    like: (trackID, profileID) => dispatch(saveLike(trackID, profileID)),
+    // like: (trackID, profileID) => dispatch(saveLike(trackID, profileID)),
     saveProfile: (name, email) => dispatch(saveProfileInfo(name, email))
   }
 }

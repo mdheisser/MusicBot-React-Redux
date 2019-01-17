@@ -1,18 +1,4 @@
-function receiveSearch(searchData) {
-  return {
-    type: 'receiveSearch',
-    result: searchData,
-  }
-}
-
-function receiveError(error) {
-  return {
-    type: 'error',
-    error: error
-  }
-}
-
-export function storeSearch(searchResult) {
+function storeSearch(searchResult) {
   return {
     type: 'saveSearch',
     result: searchResult,
@@ -39,5 +25,6 @@ export function saveSearch(searchResult, type) {
   }
   return function(dispatch) {
     fetch('/api/spotify/save', data)
+    .then(dispatch(storeSearch(searchResult)))
   }
 }

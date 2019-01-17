@@ -22,14 +22,14 @@ class App extends Component {
 
   getProfile = () => {
     const result = this.props.searchResults
-    var trackIDs = []
-    var artistIDs = []
-    var keyword = this.props.searchCategory
+    let trackIDs = []
+    let artistIDs = []
+    let keyword = this.props.searchCategory
     if(keyword === 'track') {
-      var track = result
+      let track = result
       trackIDs.push(track.id)
     } else if (keyword === 'artist') {
-      var artist = result
+      let artist = result
       artistIDs.push(artist.id)
     }
     //if signed in, add new like to profile and get rec

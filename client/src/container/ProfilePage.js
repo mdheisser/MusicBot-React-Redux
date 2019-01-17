@@ -13,8 +13,8 @@ class ProfilePage extends Component {
 
   componentDidMount() {
     const profileID = this.props.profile.profileID
-    const name = this.props.profileName.name;
-    const email = this.props.profileName.email;
+    const name = this.props.profile.name;
+    const email = this.props.profile.email;
     const data = {
       method: 'PATCH',
       headers: {'Content-Type': 'application/json'},
@@ -36,14 +36,14 @@ class ProfilePage extends Component {
   }
 
   renderProfile = () => {
-    let name = this.props.profileName.name
+    let name = this.props.profile.name
     let tracks = this.state.tracks
     if (this.state.loggedIn) {
       return (
         <div className="profile-page-container">
           <div className="page-header">
             <h2>Hello {name}</h2>
-            <p>Your likes: </p>
+            <p>Your songs: </p>
           </div>
           <div className="list-group">
             {tracks.map(track =>
