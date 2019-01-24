@@ -1,6 +1,6 @@
 class ProfileController < ApplicationController
   before_action :get_token, only: :recommend
-  before_action :get_profile, only: [:recommend, :save, :like, :sign_in, :update]
+  before_action :get_profile, only: [:recommend, :save, :like, :update_like]
 
   #when get song is clicked, create profile in db
   def create
@@ -35,17 +35,22 @@ class ProfileController < ApplicationController
     render plain: 'OK'
   end
 
-  def update
+  def update_like
     save_likes
     render json: @profile
   end
 
   #render liked tracks when users access profile
   def sign_in
-    @profile.name = params[:name]
-    @profile.email = params[:email]
-    @profile.save
-    render json: @profile.tracks
+    if params[:profile_id]
+      get_profile
+      @profile.name = params[:name]
+      @profile.email = params[:email]
+      @profile.save
+    else
+      @profile = Profile.find_by(email: params[:email])
+    end
+    render json: @profile
   end
 
   private

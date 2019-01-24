@@ -20,15 +20,20 @@ class ProfilePage extends Component {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         name: name,
-        email: email
+        email: email,
+        profileID: profileID
       })
     }
-    fetch(`/api/profiles/${profileID}/signin`, data)
+    fetch(`/api/profiles/signin`, data)
     .then(resp => resp.json())
-    .then(json => this.setState({
-      tracks: json,
-      loggedIn: true
-    })).catch(() => this.setState({
+    .then(json => {
+      this.setState({
+        tracks: json.tracks,
+        loggedIn: true
+      })
+      this.props.setID(json.id)
+    }
+  ).catch(() => this.setState({
       loggedIn: false
     }))
     //update store signIn status
@@ -47,10 +52,11 @@ class ProfilePage extends Component {
           </div>
           <div className="list-group">
             {tracks.map(track =>
-                <a className="list-group-item" href={track.spotify_url}
-                  key={track.id}>
-                  {track.name}
-                </a>
+                <div className="list-group-item" key={track.id}>
+                  <a href={track.spotify_url}>
+                    {track.name}
+                  </a>
+                </div>
             )}
           </div>
           <button className="btn btn-primary">
@@ -83,7 +89,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signIn: () => dispatch({type: 'signIn'})
+    signIn: () => dispatch({type: 'signIn'}),
+    setID: (profileID) => dispatch(
+      {type: 'signInSetID', profileID: profileID}
+    )
   }
 }
 

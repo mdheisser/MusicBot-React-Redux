@@ -19,6 +19,12 @@ export function profileReducer(state=profileState, action) {
         name: action.name,
         email: action.email
       }
+    case 'signInSetID':
+      return {
+        ...state,
+        profileID: action.profileID,
+        showProfile: true
+      }
     default:
       return state
   }

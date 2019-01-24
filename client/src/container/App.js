@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-import { Button, Grid, Row, Col } from 'react-bootstrap'
 import SearchContainer from './SearchContainer'
 import Navbar from '../presentation/Navbar'
 import ProfileContainer from '../presentation/ProfileContainer'
@@ -46,7 +45,7 @@ class App extends Component {
             artists: artistIDs.join('%20'),
           })
       }
-      fetch(`/api/profiles/${this.props.profile.profileID}`, data)
+      fetch(`/api/profiles/${this.props.profile.profileID}/likes`, data)
     }
   }
 
@@ -75,7 +74,7 @@ class App extends Component {
             <Route exact path="/recommend" render={routeProps =>
                 <ProfileContainer {...routeProps}
                 profile={this.props.profile.showProfile} />} />
-            <Route exact path={`/profiles/${profileID}`}
+            <Route exact path={`/profiles/signin`}
               render={routeProps => <ProfilePage {...routeProps} />} />
             <Route exact path="/signin" render={routeProps =>
                 <ProfileForm {...routeProps} profileID={profileID}

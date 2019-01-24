@@ -41,13 +41,11 @@ export default class ProfileForm extends Component {
               value={this.state.email} onChange={this.handleChange} />
           </FormGroup>{' '}
           <Button type="submit" onClick={this.handleSubmit}>
-            <Link to={`/profiles/${profileID}`} onClick={this.handleSubmit}>
+            <Link to={`/profiles/signin`} onClick={this.handleSubmit}>
               See My Profile</Link></Button>
         </Form>
-        <button className="spotify-button"
-          onClick={this.spotifyAuth}>
-          Connect to Spotify
-        </button>
+        {' '}
+        <small>Note: Currently this is not a secured profile. Your friends can access your account through your email.</small>
       </>
     )
   }

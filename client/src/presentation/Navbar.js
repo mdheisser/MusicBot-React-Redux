@@ -13,17 +13,12 @@ const MusicNavbar = ({profileID, loggedIn}) =>
   <Navbar.Collapse>
     <Nav>
       <NavItem eventKey={1} >
-        <Link to={loggedIn ? `/profiles/${profileID}` : "/signin"}>
+        <Link to={loggedIn ? `/profiles/signin` : "/signin"}>
           My Profile
         </Link>
       </NavItem>
       <NavItem eventKey={1} >
         <Link to={`/start`}>Explore music</Link>
-      </NavItem>
-    </Nav>
-    <Nav pullRight>
-      <NavItem eventKey={1} href="#">
-        Connect to Spotify
       </NavItem>
     </Nav>
   </Navbar.Collapse>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Jumbotron, Button } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import '../css/welcome.css'
 
