@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import ProfileList from '../presentation/ProfileList'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import '../css/profile.css'
 
 class ProfilePage extends Component {
   constructor() {
     super();
     this.state = {
       loggedIn: false,
-      tracks: []
+      tracks: [],
+      artists: []
     }
   }
 
@@ -29,7 +32,8 @@ class ProfilePage extends Component {
     .then(json => {
       this.setState({
         tracks: json.tracks,
-        loggedIn: true
+        loggedIn: true,
+        artists: json.artists
       })
       this.props.setID(json.id)
     }
@@ -43,26 +47,27 @@ class ProfilePage extends Component {
   renderProfile = () => {
     let name = this.props.profile.name
     let tracks = this.state.tracks
+    let artists = this.state.artists
     if (this.state.loggedIn) {
       return (
-        <div className="profile-page-container">
+        <>
           <div className="page-header">
-            <h2>Hello {name}</h2>
-            <p>Your songs: </p>
+            <h2>Hello {name}!</h2>
           </div>
-          <div className="list-group">
-            {tracks.map(track =>
-                <div className="list-group-item" key={track.id}>
-                  <a href={track.spotify_url}>
-                    {track.name}
-                  </a>
-                </div>
-            )}
+          <div className="profile-page-container">
+            <div className="profile-list songs-list">
+              <p>Your songs: </p>
+              <ProfileList list={tracks} />
+            </div>
+            <div className="profile-list artists-list">
+              <p>Your artists: </p>
+              <ProfileList list={artists} />
+            </div>
           </div>
           <button className="btn btn-primary">
             <Link to="/start">Back to browsing</Link>
           </button>
-        </div>
+        </>
     )} else {
       return (
         <p>Start <Link to="/start">exploring music!</Link></p>

@@ -1,3 +1,12 @@
-.profile-page-container button a {
+.btn-primary a {
   color: white;
+}
+
+.profile-page-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.profile-list {
+  width: 50%;
 }

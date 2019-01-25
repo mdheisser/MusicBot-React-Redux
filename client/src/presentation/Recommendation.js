@@ -7,7 +7,7 @@ import '../css/Rec.css'
 const Recommendation = ({rec, showNextTrack, showPreviousTrack, saveLike, iframeSRC}) => (
   <div className="rec-container">
     <div className="rec-info">
-      <p><a href={rec.external_urls.spotify}>{rec.name}</a></p>
+      {rec.external_urls && <p><a href={rec.external_urls.spotify}>{rec.name}</a></p>}
       <p>Popularity: {rec.popularity}</p>
       <p>Artist: {rec.artists[0]['name']}</p>
       <Like saveLike={saveLike} />
