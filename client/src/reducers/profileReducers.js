@@ -2,7 +2,8 @@ const profileState = {
   showProfile: false,
   profileID: '',
   name: '',
-  email: ''
+  email: '',
+  likes: []
 }
 
 export function profileReducer(state=profileState, action) {
@@ -24,6 +25,11 @@ export function profileReducer(state=profileState, action) {
         ...state,
         profileID: action.profileID,
         showProfile: true
+      }
+    case 'saveLike':
+      return {
+        ...state,
+        likes: action.likes
       }
     default:
       return state

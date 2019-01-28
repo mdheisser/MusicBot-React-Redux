@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { receiveError, saveLike, saveProfileInfo } from '../actions/ProfileActions'
+import { receiveError, saveProfileInfo } from '../actions/ProfileActions'
 import ProfileForm from '../presentation/ProfileForm'
 import Recommendation from '../presentation/Recommendation'
 
@@ -27,7 +27,7 @@ class Profile extends Component {
     return (
       <Recommendation rec={rec} showNextTrack={this.showNextTrack}
         showPreviousTrack={this.showPreviousTrack}
-        saveLike={this.saveLike} iframeSRC={iframeSRC} />
+        saveLike={this.saveLikeToDB} iframeSRC={iframeSRC} />
     )
   }
 
@@ -60,7 +60,7 @@ class Profile extends Component {
   }
 
   //after like button is clicked, save the liked track to db and associate it with the profile
-  saveLike = () => {
+  saveLikeToDB = () => {
     const trackSpotifyID = this.state.rec[this.state.recIndex].id
     this.likeToApi(trackSpotifyID, this.props.profile.profileID)
     if(!this.props.loggedIn) {
@@ -70,7 +70,7 @@ class Profile extends Component {
     }
   }
 
-  //persist the likes data (type and spotify id) to state
+  //persist the likes data (type and spotify id) to redux state
   likeToApi = (trackSpotifyID, profileID) => {
     const fetchData = {
       method: 'POST',
@@ -78,6 +78,8 @@ class Profile extends Component {
       body: JSON.stringify({spotifyID: trackSpotifyID})
     }
     fetch(`/api/profiles/${profileID}/likes`, fetchData)
+    .then(resp => resp.json())
+    .then(json => this.props.saveLike(json))
   }
 
   fetchRecommend = () => {
@@ -136,8 +138,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     error: (error) => dispatch(receiveError(error)),
-    // like: (trackID, profileID) => dispatch(saveLike(trackID, profileID)),
-    saveProfile: (name, email) => dispatch(saveProfileInfo(name, email))
+    saveProfile: (name, email) => dispatch(saveProfileInfo(name, email)),
+    saveLike: (jsonTrack) => dispatch({type: 'saveLike', likes: jsonTrack})
   }
 }
 

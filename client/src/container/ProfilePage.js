@@ -24,23 +24,27 @@ class ProfilePage extends Component {
       body: JSON.stringify({
         name: name,
         email: email,
-        profileID: profileID
+        profile_id: profileID
       })
     }
     fetch(`/api/profiles/signin`, data)
     .then(resp => resp.json())
-    .then(json => {
+    .then(json => this.logInCallback(json))
+    .catch(() => {
       this.setState({
-        tracks: json.tracks,
-        loggedIn: true,
-        artists: json.artists
+        loggedIn: false
       })
-      this.props.setID(json.id)
-    }
-  ).catch(() => this.setState({
-      loggedIn: false
-    }))
-    //update store signIn status
+    })
+  }
+
+  logInCallback = (json) => {
+    this.setState({
+      tracks: json.tracks,
+      loggedIn: true,
+      artists: json.artists
+    })
+    this.props.setID(json.id)
+    //update redux state signIn status
     this.props.signIn();
   }
 
@@ -70,7 +74,7 @@ class ProfilePage extends Component {
         </>
     )} else {
       return (
-        <p>Start <Link to="/start">exploring music!</Link></p>
+        <p>Start <Link to="/start">exploring music</Link></p>
       )
     }
   }

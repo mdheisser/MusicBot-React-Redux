@@ -5,7 +5,7 @@ import SearchContainer from './SearchContainer'
 import Navbar from '../presentation/Navbar'
 import ProfileContainer from '../presentation/ProfileContainer'
 import Welcome from '../presentation/WelcomePanel'
-import { createProfile, saveProfileInfo } from '../actions/ProfileActions'
+import { createProfile, saveProfileInfo, setProfileID } from '../actions/ProfileActions'
 import '../css/App.css'
 import ProfilePage from './ProfilePage'
 import ProfileForm from '../presentation/ProfileForm'
@@ -19,6 +19,7 @@ class App extends Component {
     }
   }
 
+  // when "get my song" is clicked after search (SearchContainer)
   getProfile = () => {
     const result = this.props.searchResults
     let trackIDs = []
@@ -31,26 +32,53 @@ class App extends Component {
       let artist = result
       artistIDs.push(artist.id)
     }
-    //if signed in, add new like to profile and get rec
+    //if not signed in, create new profile in db and get profile ID
     if(!this.props.loggedIn) {
       this.props.createProfile(trackIDs, artistIDs);
     } else {
-      //if not, create new profile in db and get profile ID
-      const data = {
-        method: 'PATCH',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(
-          {
-            tracks: trackIDs.join('%20'),
-            artists: artistIDs.join('%20'),
-          })
-      }
-      fetch(`/api/profiles/${this.props.profile.profileID}/likes`, data)
+      //if signed in, save new likes to profile db
+      this.saveLikeToDB(trackIDs, artistIDs)
     }
   }
 
+  saveLikeToDB = (trackIDs, artistIDs) => {
+    const data = {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(
+        {
+          tracks: trackIDs.join('%20'),
+          artists: artistIDs.join('%20'),
+          profile_id: this.props.profile.profileID
+        })
+    }
+    fetch(`/api/profiles/${this.props.profile.profileID}/likes`, data)
+  }
+
+  // ProfileForm sign in
   submitSignIn = (name, email) => {
-    this.props.saveProfile(name, email)
+    fetch('/api/profiles', {body: JSON.stringify({
+      email: email
+    })}).then(resp => resp.json())
+    // if email is found in db
+    .then(json => this.updateProfile(json, name, email))
+    // if not save name and email only
+    .catch(this.props.saveProfile(name, email))
+  }
+
+  // save track to email profile
+  // delete profile with the current profileID
+  // set profile ID to be the correct one
+  updateProfile = (json) => {
+    this.props.setProfileID(json.id);
+    this.props.saveProfile(json.name, json.email)
+    const likes = this.props.profile.likes
+    let trackIDs, artistIDs;
+    if (likes) {
+      trackIDs = this.props.profile.likes.tracks.map(track => track.spotify_id).join('%20')
+      artistIDs = this.props.profile.likes.artists.map(artist => artist.spotify_id).join('%20')
+    }
+    this.saveLikeToDB(trackIDs, artistIDs)
   }
 
   render() {
@@ -101,7 +129,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createProfile: (trackIDs, artistIDs) => dispatch(
       createProfile(trackIDs, artistIDs)),
-    saveProfile: (name, email) => dispatch(saveProfileInfo(name, email))
+    saveProfile: (name, email) => dispatch(saveProfileInfo(name, email)),
+    setProfileID: (id) => dispatch(setProfileID(id))
   }
 }
 

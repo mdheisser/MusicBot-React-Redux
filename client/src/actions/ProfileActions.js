@@ -1,4 +1,4 @@
-function profileAction(profileID) {
+export function setProfileID(profileID) {
   return {
     type: 'createProfile',
     profileID: profileID
@@ -34,7 +34,7 @@ export function createProfile(trackIDs, artistIDs) {
   }
   return function(dispatch) {
     fetch(`/api/profiles`, fetchData).then(resp => resp.json())
-    .then(json => dispatch(profileAction(json.id))).catch(
+    .then(json => dispatch(setProfileID(json.id))).catch(
       error => dispatch(receiveError(error)))
   }
 }

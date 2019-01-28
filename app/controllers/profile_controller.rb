@@ -9,6 +9,16 @@ class ProfileController < ApplicationController
     render json: @profile
   end
 
+  # GET profile by email
+  def show_profile
+    @profile = Profile.find_by(email: params[:email])
+    if @profile
+      render json: @profile
+    else
+      render status: 404
+    end
+  end
+
   #render json object of entire spotify response
   #save recommended tracks to db and associate with profile
   #renders spotify recommendation to Profile component
@@ -23,7 +33,7 @@ class ProfileController < ApplicationController
     render json: tracks
   end
 
-  #save liked tracks to db
+  #create track in db after search and associate track like to profile
   def like
     track = Track.find_by(spotify_id: params[:spotifyID])
     if track
@@ -31,10 +41,13 @@ class ProfileController < ApplicationController
         profile_id: @profile.id,
         track_id: track.id
       )
+      render json: {tracks: @profile.tracks, artists: @profile.artists}
+    else
+      render status: 404
     end
-    render plain: 'OK'
   end
 
+  # add like to profile after user is signed in
   def update_like
     save_likes
     render json: @profile
@@ -42,13 +55,12 @@ class ProfileController < ApplicationController
 
   #render liked tracks when users access profile
   def sign_in
-    if params[:profile_id]
+    @profile = Profile.find_by(email: params[:email])
+    if !@profile
       get_profile
       @profile.name = params[:name]
       @profile.email = params[:email]
       @profile.save
-    else
-      @profile = Profile.find_by(email: params[:email])
     end
     render json: @profile
   end

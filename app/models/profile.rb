@@ -33,12 +33,15 @@ class Profile < ApplicationRecord
     if likes > 5
       tracks = self.tracks.last(2)
       artists = self.artists.last(2)
+    else
+      tracks = self.tracks
+      artists = self.artists
     end
-    if self.tracks.count > 0
-      track_ids = self.tracks.map {|track| track.spotify_id}.join(',')
+    if tracks.count > 0
+      track_ids = tracks.map {|track| track.spotify_id}.join(',')
     end
-    if self.artists.count > 0
-      artist_ids = self.artists.map {|artist| artist.spotify_id}.join(',')
+    if artists.count > 0
+      artist_ids = artists.map {|artist| artist.spotify_id}.join(',')
     end
     resp = fetch_recommend(token, track_ids, artist_ids)
     tracks = JSON.parse(resp.body)['tracks']
