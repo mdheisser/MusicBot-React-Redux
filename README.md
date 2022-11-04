@@ -1,7 +1,5 @@
 # MusicBot Radio App
 
-Demo: https://spotify-musicbot.herokuapp.com
-
 This is a single page web app built using Rails backend and react and redux frontend. Using spotify web API and widget player, this app gives user track recommendations based on a single user input, and adjust track recommendation based on user's most recent likss of existing song recommendations.
 
 User can create profile and access her history of likes and connect with spotify to create her own playlist using tracks recommendations received from this app.
